@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSpring, animated } from 'react-spring';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
-// Data partner statis
+function RandomNumber({ n }) {
+  const { number } = useSpring({ from: { number: 0 }, to: n, delay: 200, config: { mass: 1, tension: 20, friction: 10 } });
+  return <animated.span>{number.to((val) => val.toFixed(0))}</animated.span>;
+}
+
 const partnersData = [
   { title: 'PT', image: '', description: 'Leading technology partner specializing in innovative solutions', className: 'md:row-start-1 md:col-start-1 md:col-span-2' },
   { title: 'Robo', image: '', description: 'Robotics engineering company focused on automation and AI', className: 'md:row-start-1 md:col-start-3 md:col-span-3' },
@@ -13,56 +17,8 @@ const partnersData = [
   { title: 'Pioneer', image: '', description: 'Pioneering next-generation solutions for sustainable growth', className: 'md:row-start-2 md:col-start-6 md:col-span-3' },
 ];
 
-function RandomNumber({ n }) {
-  const { number } = useSpring({ from: { number: 0 }, to: n, delay: 200, config: { mass: 1, tension: 20, friction: 10 } });
-  return <animated.span>{number.to((val) => val.toFixed(0))}</animated.span>;
-}
-
 export default function PartnersPage() {
-  const [formData, setFormData] = useState({ name: '', subject: '', email: '', phone: '', message: '' });
-  const [formState, setFormState] = useState({ status: 'idle', message: '' }); // idle, submitting, success, error
-
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setFormState({ status: 'submitting', message: '' });
-
-    try {
-      const response = await fetch('/api/submitPartnerForm', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      const responseText = await response.text();
-
-      if (!response.ok) {
-        try {
-          const errorResult = JSON.parse(responseText);
-          throw new Error(errorResult.error || 'Terjadi error di server.');
-        } catch (jsonError) {
-          throw new Error(`Server error (${response.status}). Silakan coba lagi nanti.`);
-        }
-      }
-
-      if (!responseText) {
-        throw new Error('Server tidak memberikan respons. Kemungkinan terjadi timeout. Silakan periksa Google Sheet Anda untuk memastikan data masuk.');
-      }
-      
-      const result = JSON.parse(responseText);
-      
-      setFormState({ status: 'success', message: result.message });
-      setFormData({ name: '', subject: '', email: '', phone: '', message: '' }); // Reset form
-
-    } catch (error) {
-      console.error("Submit Error:", error);
-      setFormState({ status: 'error', message: error.message });
-    }
-  };
+  const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSeiDqLYkDcDVdCoPHa742eLS9SEbYBx9YLUFB6KyhDCRhyaQw/viewform?usp=sf_link';
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--main-blue)] text-[var(--white)] font-sans relative overflow-hidden">
@@ -106,46 +62,32 @@ export default function PartnersPage() {
       </section>
 
       <section className="px-4 sm:px-6 md:px-8 lg:px-16 py-20 flex flex-col lg:flex-row gap-12 items-start">
-        <div className="lg:w-1/3 text-center lg:text-left"><h2 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-[var(--white)] font-display">BECOME<br />A PARTNER</h2></div>
+        <div className="lg:w-1/3 text-center lg:text-left">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight text-[var(--white)] font-display">
+            BECOME<br />A PARTNER
+          </h2>
+        </div>
         
-        <form onSubmit={handleSubmit} className="lg:w-2/3 w-full space-y-6">
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-            <div className="w-full">
-              <label htmlFor="name" className="block text-sm font-semibold mb-2">Name</label>
-              <input id="name" type="text" value={formData.name} onChange={handleChange} required className="w-full px-4 py-3 rounded-md bg-white/10 backdrop-blur-md text-white placeholder-gray-400 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/60" placeholder="Your name" />
-            </div>
-            <div className="w-full">
-              <label htmlFor="subject" className="block text-sm font-semibold mb-2">Subject</label>
-              <input id="subject" type="text" value={formData.subject} onChange={handleChange} required className="w-full px-4 py-3 rounded-md bg-white/10 backdrop-blur-md text-white placeholder-gray-400 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/60" placeholder="Subject" />
-            </div>
+        <a 
+          href={googleFormUrl}
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="lg:w-2/3 w-full space-y-4 bg-white/10 backdrop-blur-md border border-white/30 rounded-lg p-8 text-center lg:text-left hover:border-white/60 hover:bg-white/20 transition-all duration-300 group"
+        >
+          <h3 className="text-2xl font-bold text-white">Fill Out Our Partnership Form</h3>
+          <p className="text-white/70">
+            Interested in becoming a partner? Click here to open our official partnership form.
+          </p>
+          <div className="font-semibold text-[var(--orange)] text-lg group-hover:underline">
+            Open Partnership Form
           </div>
-          <div className="flex flex-col md:flex-row gap-6">
-            <div className="w-full">
-              <label htmlFor="email" className="block text-sm font-semibold mb-2">Email</label>
-              <input id="email" type="email" value={formData.email} onChange={handleChange} required className="w-full px-4 py-3 rounded-md bg-white/10 backdrop-blur-md text-white placeholder-gray-400 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/60" placeholder="your.email@company.com" />
-            </div>
-            <div className="w-full">
-              <label htmlFor="phone" className="block text-sm font-semibold mb-2">Phone Number</label>
-              <input id="phone" type="tel" value={formData.phone} onChange={handleChange} required className="w-full px-4 py-3 rounded-md bg-white/10 backdrop-blur-md text-white placeholder-gray-400 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/60" placeholder="0812 3456 7890" />
-            </div>
-          </div>
-          <div>
-            <label htmlFor="message" className="block text-sm font-semibold mb-2">Message</label>
-            <textarea id="message" value={formData.message} onChange={handleChange} required className="w-full px-4 py-3 rounded-md bg-white/10 backdrop-blur-md text-white placeholder-gray-400 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/60 resize-none" rows="4" placeholder="Tell us about your partnership interest..."></textarea>
-          </div>
-          
-          <div className="flex justify-end items-center pt-4 gap-4">
-             {formState.message && (
-                <p className={`${formState.status === 'success' ? 'text-green-400' : 'text-red-400'}`}>
-                  {formState.message}
-                </p>
-             )}
-             <button type="submit" disabled={formState.status === 'submitting'} className="bg-[var(--white)] text-[var(--main-blue)] font-bold px-8 py-3 rounded-full hover:bg-gray-200 transition text-lg flex items-center gap-2 disabled:bg-gray-300 disabled:cursor-not-allowed">
-               {formState.status === 'submitting' ? 'Sending...' : 'Submit'} 
+          <div className="flex justify-center lg:justify-end pt-4">
+             <div className="bg-[var(--white)] text-[var(--main-blue)] font-bold px-8 py-3 rounded-full transition text-lg flex items-center gap-2">
+               Open Form
                <FontAwesomeIcon icon={faArrowRight} className="text-base" />
-             </button>
+             </div>
           </div>
-        </form>
+        </a>
       </section>
     </div>
   );
