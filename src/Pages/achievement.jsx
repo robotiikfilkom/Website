@@ -29,7 +29,7 @@ export default function Achievement() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-[var(--main-blue)] to-[#0B1E3D] text-[var(--white)] relative overflow-hidden">
-      <header className="pt-16 pb-8 text-center">
+      <header className="pt-24 pb-8 text-center">
         <h1 className="text-4xl md:text-5xl font-bold tracking-wide font-display">
           Achievements
         </h1>
@@ -48,7 +48,7 @@ export default function Achievement() {
         )}
         {!loading && !error && (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-6 gap-6 max-w-6xl w-full mx-auto px-4 md:px-6 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-6 gap-6 w-full max-w-7xl mx-auto px-4 md:px-6 mt-8">
               {visibleItems.map((item, index) => (
                 <AchievementCard
                   key={item.id}

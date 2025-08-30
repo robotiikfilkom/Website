@@ -2,12 +2,11 @@ import React from "react";
 
 const AboutUs = () => {
   return (
-    <section className="w-full px-6 pt-8 pb-6">
+    <section className="w-full px-20 pt-8 pb-6">
       <div className="flex items-start gap-6">
-        {/* About Us Title */}
+        
         <h2 className="text-lg font-bold whitespace-nowrap">[About Us]</h2>
 
-        {/* About Us Text */}
         <div className="space-y-4 text-justify leading-relaxed font-bold">
           <p>
             ROBOTIK, an abbreviation of Robotics Faculty of Computer Science, Brawijaya University,

@@ -4,7 +4,7 @@ import struktur from "/src/assets/img/Struktur-Robotiik.png";
 
 export const TopImage = () => {
   return (
-    <div className="flex justify-center pt-8 pb-4">
+    <div className="flex justify-center pt-24 pb-4">
       <img
         src={orgStructure}
         alt="Organizational Structure"

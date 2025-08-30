@@ -1,12 +1,23 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import React from 'react';
+import { Link } from 'react-router-dom'; // 1. Impor Link
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 
 export default function AchievementCard({ item, layoutClass }) {
   if (!item || !item.id) return null;
 
+  // Cek apakah link internal atau eksternal
+  const isExternalLink = item.link && (item.link.startsWith('http://') || item.link.startsWith('https://'));
+
+  // 2. Ganti `div` pembungkus utama dengan `Link` atau `a`
+  const CardComponent = isExternalLink ? 'a' : Link;
+  const linkProps = isExternalLink 
+    ? { href: item.link, target: '_blank', rel: 'noopener noreferrer' } 
+    : { to: item.link || '#' };
+
   return (
-    <div
+    <CardComponent
+      {...linkProps}
       className={`relative rounded-2xl overflow-hidden shadow-lg min-h-[220px] flex items-end group cursor-pointer transform transition-all duration-300 hover:scale-105 ${layoutClass}`}
     >
       <img
@@ -33,6 +44,6 @@ export default function AchievementCard({ item, layoutClass }) {
           </p>
         </div>
       </div>
-    </div>
+    </CardComponent>
   );
 }

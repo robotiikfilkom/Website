@@ -5,14 +5,13 @@ const missionList = [
   "To establish an ecosystem that supports inter-division collaboration in every project and competition to produce innovative solutions.",
   "To foster an organizational culture focused on sustainability and transparency in the management of resources, including funding and facilities.",
   "To focus on member achievement by providing full support in robotics competitions at local, national, and international levels, while ensuring that every member has the opportunity to develop their potential and earn recognition.",
-  "Mengoptimalkan penggunaan media sosial dan publikasi untuk memperkenalkan prestasi, inovasi, dan kontribusi ROBOTIK kepada masyarakat luas.",
-  "Menjalin kerjasama dengan berbagai pihak eksternal, baik institusi pendidikan, industri, maupun komunitas, untuk meningkatkan pengaruh dan dampak sosial."
+  "Optimizing the use of social media and publications to introduce the achievements, innovations, and contributions of ROBOTIIK to the wider community.",
+  "Establishing cooperation with various external parties, including educational institutions, industries, and communities, to increase influence and social impact."
 ];
 
 const VisionMission = () => {
   return (
     <>
-      {/* Vision */}
       <section className="w-full px-6 pt-4 pb-4">
         <h2 className="text-3xl font-bold text-center mb-4">Vision</h2>
         <div className="border-b-4 border-black w-11/12 mx-auto mt-1 mb-6"></div>
@@ -22,7 +21,6 @@ const VisionMission = () => {
         </div>
       </section>
 
-      {/* Mission */}
       <section className="w-full px-4 md:px-8 pt-4 pb-12"> 
         <h2 className="text-3xl font-bold text-center mb-4">Mission</h2>
         <div className="border-b-4 border-black w-11/12 mx-auto mt-1 mb-6"></div>

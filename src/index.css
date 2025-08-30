@@ -31,3 +31,25 @@
   font-weight: 700;
   font-style: normal;
 }
+
+/* ... (kode CSS Anda yang lain) ... */
+
+/* Styling untuk Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  height: 8px; /* Tinggi scrollbar */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: rgba(0, 31, 63, 0.1); /* Warna track, sedikit transparan */
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--main-blue); /* Warna thumb (handle) dari design system */
+  border-radius: 10px;
+  border: 2px solid var(--cream); /* Memberi sedikit border agar terlihat terpisah */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: var(--blue); /* Warna saat di-hover */
+}

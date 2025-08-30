@@ -2,33 +2,51 @@ import React from 'react';
 import './App.css'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { Routes, Route } from 'react-router-dom';
+
 import Navbar from './navbar';
-import Head from './head';
-import Mid from './mid';
+import Footer from './footer';
+import ScrollToTop from './ScrollToTop';
+
+import Home from './Pages/home';
 import Achievement from './Pages/achievement';
 import Partners from './Pages/partners';
 import About from './Pages/about';
-import Footer from './footer';
-import { Routes, Route } from 'react-router-dom';
+
+import Executive from './Pages/Executive';
+import HRD from './Pages/HRD';
+import GeneralAffair from './Pages/GeneralAffair';
+import MIT from './Pages/MIT';
+import RND from './Pages/RND';
+import Humanoid from './Pages/Humanoid';
+import Amarine from './Pages/Amarine';
+import Quadcopter from './Pages/Quadcopter';
+
 
 const App = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[#0b1e3d] to-[#112a4c] text-white font-sans relative overflow-hidden">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-[var(--main-blue)] to-[#0B1E3D] text-[var(--white)] font-sans relative">
       <Navbar />
-      <Routes>
-      <Route path="/" element={
-        <>
-          <Head />
-          <Mid />
-        </>
-      } />
-      <Route path="/achievement" element={<Achievement />} />
-      <Route path="/partners" element={<Partners />} />
-      <Route path="/about" element={<About />} />
-    </Routes>
+      <ScrollToTop />
+      <main className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/achievement" element={<Achievement />} />
+          <Route path="/partners" element={<Partners />} />
+          <Route path="/about" element={<About />} />
+
+          <Route path="/division/executive" element={<Executive />} />
+          <Route path="/division/hrd" element={<HRD />} />
+          <Route path="/division/general-affair" element={<GeneralAffair />} />
+          <Route path="/division/mit" element={<MIT />} />
+          <Route path="/division/rnd" element={<RND />} />
+          <Route path="/division/humanoid" element={<Humanoid />} />
+          <Route path="/division/amarine" element={<Amarine />} />
+          <Route path="/division/quadcopter" element={<Quadcopter />} />
+
+        </Routes>
+      </main>
       <Footer />
-      
-      
     </div>
   );
 }
