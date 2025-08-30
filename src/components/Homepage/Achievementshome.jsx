@@ -91,7 +91,7 @@ export default function Achievementshome() {
   const recentAchievements = achievements.slice(0, 5);
 
   return (
-    <section className="bg-[var(--cream)] text-[var(--black)] py-20 md:py-28 overflow-hidden">
+    <section className="bg-[var(--cream)] text-[var(--black)] px-12 py-20 md:py-28 overflow-hidden">
       <div className="mx-auto">
         <div className="flex flex-col md:flex-row items-start gap-8 md:gap-16">
           <div className="w-full md:w-1/3">
