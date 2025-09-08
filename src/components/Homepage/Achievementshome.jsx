@@ -63,7 +63,7 @@ const Card = ({ item }) => {
       // 1. 'w-full' membuat kartu mengisi lebar kontainer di layar terkecil (mobile).
       // 2. 'sm:w-72' mengembalikan lebar tetap untuk layar lebih besar.
       // 3. 'snap-center' memastikan kartu berhenti tepat di tengah saat digeser.
-      className="relative flex-shrink-0 w-full sm:w-72 lg:w-80 snap-center aspect-[9/16] rounded-3xl p-2 group cursor-pointer transform transition-all duration-300 hover:scale-105"
+      className="relative flex-shrink-0 w-full sm:w-72 lg:w-80 snap-center aspect-[9/16] rounded-3xl p-2 pb-8 group cursor-pointer transform transition-all duration-300 hover:scale-105"
     >
       <div className="relative w-full h-full overflow-hidden rounded-2xl">
         <img
