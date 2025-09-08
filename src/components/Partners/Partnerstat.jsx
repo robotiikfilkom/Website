@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import RandomNumber from "./RandomNumber";
+import RandomNumber from "../../utils/Randomnumber";
 
 export default function PartnersStats() {
   const [isMounted, setIsMounted] = useState(false);
