@@ -6,7 +6,7 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 export default function AboutUs() {
   return (
     <section className="bg-[var(--cream)] text-black py-20 md:py-28 px-4 sm:px-6 md:px-8">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+      <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
         <div className="lg:col-span-1 text-center lg:text-left">
           <h2 className="text-4xl sm:text-5xl font-bold font-glancyr leading-tight">
             About Us

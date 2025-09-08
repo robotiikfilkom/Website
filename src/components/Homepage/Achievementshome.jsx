@@ -59,7 +59,7 @@ const Card = ({ item }) => {
       href={item.link} // Menggunakan href untuk URL
       target="_blank" // Atribut untuk membuka di tab baru
       rel="noopener noreferrer" // Praktik keamanan untuk target="_blank"
-      className="relative flex-shrink-0 w-64 sm:w-72 aspect-[9/16] rounded-3xl p-3 group cursor-pointer transform transition-all duration-300 hover:scale-105"
+      className="relative flex-shrink-0 w-64 sm:w-72 aspect-[9/16] rounded-3xl py-8 px-2 group cursor-pointer transform transition-all duration-300 hover:scale-105"
     >
       <div className="relative w-full h-full overflow-hidden rounded-2xl">
         <img
@@ -140,9 +140,9 @@ export default function Achievementshome() {
           </Link>
         </div>
 
-        <div className="w-full overflow-x-auto custom-scrollbar pt-10 overflow-y-hidden">
-          <div className="flex gap-3 sm:gap-4 pb-4 -mb-4 snap-x snap-mandatory">
-            <div className="flex-shrink-0 w-4 sm:w-6 md:w-8 lg:w-16 snap-center"></div>
+      <div className="w-full overflow-x-auto custom-scrollbar pt-10 overflow-y-hidden">
+        <div className="flex gap-3 pb-4 -mb-4 snap-x snap-mandatory">
+          <div className="flex-shrink-0 w-4 sm:w-6 md:w-8 lg:w-16 snap-center"></div>
 
             {loading && (
               <p className="py-24 text-center w-full">

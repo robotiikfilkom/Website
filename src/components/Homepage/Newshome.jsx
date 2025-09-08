@@ -1,57 +1,77 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import Papa from "papaparse";
 
-// Placeholder untuk gambar Anda (bisa diganti dengan gambar berita)
-import robot1 from "../../assets/img/humanoid.jpg";
-import robot2 from "../../assets/img/logo.png";
-import robot3 from "../../assets/img/logo.png";
-import robot4 from "../../assets/img/logo.png";
+// ====================================================================
+// FUNGSI PENGAMBIL DATA (CUSTOM HOOK)
+// ====================================================================
+function useGoogleSheetData(spreadsheetUrl) {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-const newsData = [
-  {
-    id: 1,
-    src: robot1,
-    title: "New Sensor Integration",
-    desc: "Exploring the latest in sensor technology for our robots.",
-    link: "/news/1",
-  },
-  {
-    id: 2,
-    src: robot2,
-    title: "Competition Prep",
-    desc: "Our teams are gearing up for the national competition.",
-    link: "/news/2",
-  },
-  {
-    id: 3,
-    src: robot3,
-    title: "AI Workshop",
-    desc: "Hosting a workshop on machine learning for robotics.",
-    link: "/news/3",
-  },
-  {
-    id: 4,
-    src: robot4,
-    title: "Community Outreach",
-    desc: "Showcasing our projects at the local science fair.",
-    link: "/news/4",
-  },
-  {
-    id: 5,
-    src: robot1,
-    title: "New Partnership",
-    desc: "Collaborating with industry leaders on new research.",
-    link: "/news/5",
-  },
-];
+  const fetchData = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    fetch(spreadsheetUrl, { cache: "no-cache" })
+      .then((response) => {
+        if (!response.ok) throw new Error("Gagal mengambil data Spreadsheet.");
+        return response.text();
+      })
+      .then((csvText) => {
+        Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true,
+          transformHeader: header => header.toLowerCase().trim(),
+          complete: (results) => {
+            const validData = results.data.filter((row) => row.id && row.src && row.title);
+            const parsedData = validData.map((row) => ({
+              id: parseInt(row.id, 10),
+              src: row.src,
+              title: row.title,
+              desc: row.desc || '',
+              link: row.link || '#',
+            }));
+            setData(parsedData.reverse());
+          },
+          error: (err) => setError(`Gagal memproses CSV: ${err.message}`),
+        });
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setError(err.message);
+      })
+      .finally(() => setLoading(false));
+  }, [spreadsheetUrl]);
 
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  return { data, loading, error };
+}
+
+
+// ====================================================================
+// CATATAN PENTING: Untuk 'line-clamp-3' berfungsi, Anda perlu
+// menginstal plugin Tailwind CSS.
+// 1. Jalankan di terminal: npm install -D @tailwindcss/line-clamp
+// 2. Tambahkan ke tailwind.config.js: plugins: [require('@tailwindcss/line-clamp')],
+// ====================================================================
+
+
+// ====================================================================
+// KOMPONEN CARD (Tampilan diperbaiki)
+// ====================================================================
 const NewsCard = ({ item }) => {
   return (
-    <Link
-      to={item.link}
-      className="relative flex-shrink-0 w-96 h-[500px] max-w-xl aspect-video rounded-3xl p-3 group cursor-pointer transform transition-all duration-300 hover:scale-105"
+    <a
+      href={item.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="relative flex-shrink-0 w-96 h-[500px] max-w-xl aspect-video rounded-3xl py-8 group cursor-pointer transform transition-all duration-300 hover:scale-105"
     >
       <div className="relative w-full h-full overflow-hidden rounded-2xl">
         <img
@@ -70,23 +90,48 @@ const NewsCard = ({ item }) => {
         <div className="relative z-20 p-4 w-full flex flex-col justify-end h-full">
           <div className="absolute inset-x-2 bottom-2 h-28 bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 rounded-xl border border-white/20"></div>
           <div className="flex flex-col z-20 transition-all duration-300 gap-0 group-hover:gap-1">
-            <h3 className="text-[var(--white)] text-2xl font-bold drop-shadow-lg font-display transition-all duration-300 mb-2 group-hover:mb-0">
+            <h3 className="text-[var(--white)] text-2xl font-bold drop-shadow-lg font-display transition-all duration-300 mb-2 group-hover:mb-0 break-words">
               {item.title}
             </h3>
-            <p className="text-[var(--white)] text-base font-sans opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-full transition-all duration-300 leading-relaxed">
+            <p className="text-[var(--white)] text-base font-sans opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-full transition-all duration-300 leading-relaxed break-words line-clamp-3 group-hover:min-h-12">
+              {/* // <-- PERUBAHAN DI SINI: 'group-hover:min-h-12' ditambahkan */}
               {item.desc}
             </p>
           </div>
         </div>
       </div>
-    </Link>
+    </a>
   );
 };
 
+// ====================================================================
+// KOMPONEN UTAMA (Tidak ada perubahan)
+// ====================================================================
 export default function Newshome() {
+  const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeH6GPT_zewQGOeZcDKZQowl7FVcSiQZr-JDSwSL9tnQpIGhI_2a8wk5YhTWMNRUxXTj5kZDxQ-b6T/pub?gid=1416863627&single=true&output=csv';
+  
+  const { data: newsData, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
+
+  // Logika untuk menampilkan loading dan error
+  if (loading) {
+    return (
+      <section className="bg-[var(--cream)] text-center py-40">
+        <p>Loading news...</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="bg-[var(--cream)] text-center py-40">
+        <p className="text-red-500">Error: {error}</p>
+      </section>
+    );
+  }
+
+  // Tampilan asli Anda akan dirender HANYA jika data sudah siap
   return (
-    <section className="bg-[var(--cream)] text-[var(--black)] py-10 px-12">
-      {/* Bagian Teks Pengantar */}
+    <section className="bg-[var(--cream)] text-[var(--black)] px-12 py-20 md:py-28 overflow-hidden">
       <div className="w-full mx-auto mb-10">
         {/* PERBAIKAN UTAMA DI SINI: Membuat layout 2 kolom */}
         <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
@@ -113,14 +158,16 @@ export default function Newshome() {
         </div>
       </div>
 
-      {/* Bagian Slider Berita (tidak diubah) */}
-      <div className="w-full overflow-x-auto custom-scrollbar">
-        <div className="flex pb-4 snap-x snap-mandatory">
-          <div className="flex-shrink-0 w-4 h-20 snap-center"></div>
+      <div className="w-full overflow-x-auto overflow-y-hidden custom-scrollbar">
+        <div className="flex gap-4 sm:gap-6 pb-4 -mb-4 snap-x snap-mandatory">
+          <div className="flex-shrink-0 w-4 sm:w-6 md:w-8 lg:w-16 snap-center"></div>
+          
+          {/* Data sekarang dinamis dari 'newsData' hasil fetch */}
           {newsData.map((item, index) => (
-            <NewsCard key={index} item={item} />
+            <NewsCard key={item.id || index} item={item} />
           ))}
-          <div className="flex-shrink-0 w-4 snap-center"></div>
+          
+          <div className="flex-shrink-0 w-4 sm:w-6 md:w-8 lg:w-16 snap-center"></div>
         </div>
       </div>
     </section>
