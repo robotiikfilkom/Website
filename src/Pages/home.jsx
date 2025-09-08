@@ -9,7 +9,7 @@ import Newshome from '../components/Homepage/Newshome';
 
 const Home = () => {
     return (
-        <div>
+        <div className="bg-gradient-to-b from-[var(--main-blue)] via-[#002a5c] to-[var(--cream)]">
             <HeroSection />
             <AboutUs />
             <ImageMarquee />

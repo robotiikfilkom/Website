@@ -49,3 +49,25 @@
     -ms-overflow-style: none;  
     scrollbar-width: none;  
 }
+
+/* File: index.css */
+.hero-bg-isometric {
+  background-color: var(--main-blue);
+  /* Membuat 3 lapis gradien linear untuk membentuk grid isometrik */
+  background-image:
+    linear-gradient(60deg, rgba(0, 115, 186, 0.15) 1px, transparent 1px),
+    linear-gradient(-60deg, rgba(0, 115, 186, 0.15) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(0, 115, 186, 0.15) 1px, transparent 1px);
+  background-size: 50px 86px; /* Ukuran grid */
+  animation: pan-grid 30s linear infinite; /* Menambahkan animasi gerakan */
+}
+
+/* Animasi untuk menggeser posisi background secara perlahan */
+@keyframes pan-grid {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100px 172px; /* Menggeser sejauh 2x ukuran grid agar mulus */
+  }
+}

@@ -55,7 +55,6 @@ const LogoSet = ({ brandLogos }) => (
                 key={index}
                 src={logo.src}
                 alt={logo.name}
-                // PERUBAHAN: Ukuran logo (tinggi dan lebar maks) dibuat 2x lebih besar di setiap breakpoint.
                 className="h-48 w-auto max-w-48 sm:h-56 sm:max-w-56 md:h-64 md:max-w-64 lg:h-80 lg:max-w-80 rounded-2xl object-cover bg-[var(--cream)] p-2"
             />
         ))}
@@ -71,15 +70,38 @@ export default function Brandhome() {
   
   const { data: brandLogos, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
 
-  const marqueeVariants = {
+  const title = "Partners & Sponsors";
+  const titleWords = title.split(" ");
+
+  const titleContainerVariant = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+    },
+  };
+
+  const wordVariant = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  };
+
+  const marqueeRevealVariant = {
+    hidden: { clipPath: 'inset(0 100% 0 0)' },
+    visible: {
+      clipPath: 'inset(0 0 0 0)',
+      transition: { duration: 1, ease: [0.76, 0, 0.24, 1], delay: 0.5 },
+    },
+  };
+
+  const marqueeScrollVariant = {
     animate: {
-      x: [0, "-100%"],
+      x: ["0%", "-100%"],
       transition: {
         x: {
           repeat: Infinity,
           repeatType: "loop",
-          // PERUBAHAN: Durasi animasi diperpanjang menjadi 60 detik untuk memperlambat gerakan.
-          duration: 400,
+          duration: 300,
           ease: "linear",
         },
       },
@@ -87,14 +109,31 @@ export default function Brandhome() {
   };
 
   return (
+    // PERUBAHAN: Latar belakang diubah dari transparan menjadi bg-[var(--cream)]
     <section className="bg-[var(--cream)] py-16 md:py-20 overflow-hidden">
       <div className="max-w-7xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-        <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold font-sans uppercase tracking-widest text-[var(--black)] mb-10 md:mb-12">
-          Partners & Sponsors
-        </h3>
+        
+        <motion.h3
+          className="text-2xl sm:text-3xl lg:text-4xl font-bold font-sans uppercase tracking-widest text-[var(--black)] mb-10 md:mb-12"
+          variants={titleContainerVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {titleWords.map((word, index) => (
+            <motion.span key={index} variants={wordVariant} className="inline-block mr-3">
+              {word}
+            </motion.span>
+          ))}
+        </motion.h3>
 
-        {/* PERUBAHAN: Tinggi kontainer marquee disesuaikan untuk mengakomodasi logo yang lebih besar. */}
-        <div className="relative w-full overflow-hidden h-96 flex items-center">
+        <motion.div
+          className="relative w-full overflow-hidden h-96 flex items-center"
+          variants={marqueeRevealVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
           <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-16 md:w-24 lg:w-32 bg-gradient-to-r from-[var(--cream)] to-transparent z-10"></div>
           <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-16 md:w-24 lg:w-32 bg-gradient-to-l from-[var(--cream)] to-transparent z-10"></div>
           
@@ -104,7 +143,7 @@ export default function Brandhome() {
           {!loading && !error && brandLogos.length > 0 && (
             <motion.div
               className="flex gap-4 sm:gap-6 md:gap-8"
-              variants={marqueeVariants}
+              variants={marqueeScrollVariant}
               animate="animate"
             >
               <LogoSet brandLogos={brandLogos} />
@@ -112,7 +151,7 @@ export default function Brandhome() {
               <LogoSet brandLogos={brandLogos} />
             </motion.div>
           )}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from 'framer-motion';
 
 const missionList = [
   "To enhance member capabilities through intensive training and skill development based on the latest technologies.",
@@ -10,32 +11,95 @@ const missionList = [
 ];
 
 const VisionMission = () => {
-  return (
-    <>
-      <div className="w-full px-12 pt-4 pb-4">
-        <h2 className="text-3xl font-bold text-center mb-4">Vision</h2>
-        <div className="border-b-4 border-[var(--black)] w-11/12 mx-auto mt-1 mb-6"></div>
-        <div className="bg-[var(--white)] rounded-lg shadow-[0_6px_10px_rgba(0,0,0,0.25)] p-6 max-w-3xl mx-auto text-center leading-relaxed font-bold text-lg">
-          To establish ROBOTIK as a leading institution in the field of robotics and embedded systems,
-          capable of producing high-quality individuals who excel and make meaningful contributions to society.
-        </div>
-      </div>
+  // Varian untuk kontainer grid misi (mengatur stagger)
+  const staggerContainerVariant = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1, // Jeda antar setiap kartu misi
+        delayChildren: 0.3,   // Mulai animasi anak setelah 0.3 detik
+      },
+    },
+  };
 
-      <div className="w-full px-4 md:px-8 pt-4 pb-12"> 
-        <h2 className="text-3xl font-bold text-center mb-4">Mission</h2>
-        <div className="border-b-4 border-[var(--black)] w-11/12 mx-auto mt-1 mb-6"></div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-lg">
-          {missionList.map((text, idx) => (
-            <div
-              key={idx}
-              className="bg-[var(--white)] rounded-lg shadow-[0_6px_10px_rgba(0,0,0,0.25)] p-6 flex items-center justify-center text-center leading-relaxed min-h-[150px] font-bold"
-            >
-              {text}
-            </div>
-          ))}
+  // Varian untuk setiap kartu misi (efek flip 3D & scale)
+  const itemVariant = {
+    hidden: { opacity: 0, scale: 0.5, rotateY: -90 },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      rotateY: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.25, 1, 0.5, 1] // Easing custom untuk efek 'pop'
+      }
+    },
+  };
+
+  // Varian sederhana untuk Visi dan judul Misi
+  const fadeUpVariant = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+  };
+
+  return (
+    // PERBAIKAN: Komponen dibungkus <section> dengan bg dan padding responsif
+    <section className="bg-[var(--cream)] w-full px-4 sm:px-6 md:px-8 lg:px-12 pt-12 pb-20 md:pb-28">
+      <div className="max-w-7xl mx-auto">
+        {/* Visi */}
+        <motion.div 
+          className="text-center"
+          variants={fadeUpVariant}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {/* PERBAIKAN: Tipografi dan pembatas dibuat responsif */}
+          <h2 className="text-3xl sm:text-4xl font-bold font-glancyr mb-4">Vision</h2>
+          <div className="border-b-4 border-[var(--black)] w-24 mx-auto mb-6"></div>
+          {/* PERBAIKAN: Shadow dan tipografi disesuaikan */}
+          <div className="bg-[var(--white)] rounded-lg shadow-xl p-6 max-w-3xl mx-auto text-base sm:text-lg leading-relaxed font-sfpro">
+            To establish ROBOTIK as a leading institution in the field of robotics and embedded systems,
+            capable of producing high-quality individuals who excel and make meaningful contributions to society.
+          </div>
+        </motion.div>
+
+        {/* Misi */}
+        <div className="mt-20 md:mt-24 text-center"> 
+          <motion.h2 
+            className="text-3xl sm:text-4xl font-bold font-glancyr mb-4"
+            variants={fadeUpVariant}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, delay: 0.2 }}
+          >
+            Mission
+          </motion.h2>
+          <div className="border-b-4 border-[var(--black)] w-24 mx-auto mb-6"></div>
+          
+          {/* Grid Misi dengan animasi berantai */}
+          <motion.div
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 text-sm sm:text-base"
+            variants={staggerContainerVariant}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {missionList.map((text, idx) => (
+              <motion.div
+                key={idx}
+                className="bg-[var(--white)] rounded-lg shadow-xl p-6 flex items-center justify-center text-center leading-relaxed min-h-[150px] sm:min-h-[180px] font-sfpro"
+                variants={itemVariant}
+                style={{ transformStyle: 'preserve-3d' }} // Penting untuk animasi 3D
+              >
+                {text}
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 

@@ -100,7 +100,6 @@ export default function Executive() {
   const staff = allData.filter(item => item.category === 'staff');
   const activities = allData.filter(item => item.category === 'activity');
   
-  // Fungsi untuk menentukan lebar kartu kegiatan berdasarkan ID
   const getActivityWidthClass = (activityId) => {
     const id = parseInt(activityId, 10);
     if (id === 1 || id === 4) {
@@ -109,7 +108,7 @@ export default function Executive() {
     if (id === 2 || id === 3) {
       return 'md:w-2/5';
     }
-    return 'md:w-1/2'; // Fallback jika ID tidak cocok
+    return 'md:w-1/2'; 
   };
   
   if (loading) return <div className="min-h-screen bg-[var(--main-blue)] text-white flex items-center justify-center"><p>Loading Division Data...</p></div>;
@@ -151,14 +150,12 @@ export default function Executive() {
           <section>
             <h2 className="text-3xl font-display font-bold mb-8 text-center">Division Activities</h2>
             <div className="flex flex-col gap-6">
-              {/* Baris Atas */}
               <div className="flex flex-col sm:flex-row w-full gap-6">
                 {activities.find(a => a.id === 1) && 
                   <ActivityCard item={activities.find(a => a.id === 1)} widthClass={getActivityWidthClass(1)} />}
                 {activities.find(a => a.id === 2) && 
                   <ActivityCard item={activities.find(a => a.id === 2)} widthClass={getActivityWidthClass(2)} />}
               </div>
-              {/* Baris Bawah */}
               <div className="flex flex-col sm:flex-row w-full gap-6">
                 {activities.find(a => a.id === 3) && 
                   <ActivityCard item={activities.find(a => a.id === 3)} widthClass={getActivityWidthClass(3)} />}
