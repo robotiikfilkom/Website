@@ -88,12 +88,12 @@ export default function ImageMarquee() {
     },
   };
 
-  if (loading) return <div className="text-center py-8 bg-[var(--cream)]">Loading images...</div>;
-  if (error) return <div className="text-center py-8 bg-[var(--cream)] text-red-500">Error: {error}</div>;
+  if (loading) return <div className="text-center py-8 ">Loading images...</div>;
+  if (error) return <div className="text-center py-8 text-red-500">Error: {error}</div>;
   if (images.length === 0) return null;
 
   return (
-    <div className="w-full overflow-x-hidden whitespace-nowrap py-9 bg-[var(--cream)]">
+    <div className="w-full overflow-x-hidden whitespace-nowrap py-9 ">
       <motion.div
         className="flex gap-4"
         variants={marqueeVariants}

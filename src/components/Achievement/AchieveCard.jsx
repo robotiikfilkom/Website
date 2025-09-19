@@ -31,18 +31,24 @@ export default function AchievementCard({ item, layoutClass }) {
           />
         </div>
       </div>
+
+      {/* ====================================================================
+          PERUBAHAN UTAMA DI SINI
+      ==================================================================== */}
       <div className="relative z-20 p-4 w-full flex flex-col justify-end h-full">
-        {/* Latar belakang blur yang muncul saat hover */}
-        <div className="absolute inset-x-2 bottom-2 h-20 bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 rounded-xl border border-white/20"></div>
-        
-        {/* Kontainer teks yang telah diperbaiki */}
-        <div className="flex flex-col mx-2 z-20 transition-all duration-300 gap-0 group-hover:gap-1 justify-end group-hover:justify-center group-hover:min-h-[4rem]">
-          <h3 className="text-[var(--white)] text-2xl md:text-3xl font-bold drop-shadow-lg font-display transition-all duration-300 mb-2 group-hover:mb-0">
-            {item.title}
-          </h3>
-          <p className="text-[var(--white)] text-base font-sans opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-full transition-all duration-300 leading-relaxed">
-            {item.desc}
-          </p>
+        {/* Container ini sekarang menjadi panel DAN pembungkus teks */}
+        <div className="relative bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-xl border border-white/20 p-4">
+          
+          {/* Konten teks berada di dalam panel */}
+          <div className="flex flex-col z-20 gap-0 group-hover:gap-1">
+            <h3 className="text-[var(--white)] text-xl md:text-2xl font-bold drop-shadow-lg font-display transition-all duration-300 mb-2 group-hover:mb-0">
+              {item.title}
+            </h3>
+            <p className="text-[var(--white)] text-sm md:text-base font-sans opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-full transition-all duration-300 leading-relaxed">
+              {item.desc}
+            </p>
+          </div>
+          
         </div>
       </div>
     </CardComponent>

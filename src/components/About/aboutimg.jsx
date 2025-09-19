@@ -7,7 +7,7 @@ export const TopImage = () => {
   return (
     // Menambahkan bg-[var(--cream)] dan padding responsif
     // *** Catatan: Padding pt-4 pb-8 md:pb-12 dipindahkan ke sini ***
-    <div className="flex justify-center bg-[var(--cream)] pt-16 sm:pt-20 md:pt-24 pb-4">
+    <div className="flex justify-center pt-16 sm:pt-20 md:pt-24 pb-4">
       <img
         src={orgStructure}
         alt="Organizational Structure"
@@ -36,7 +36,7 @@ export const TopImage = () => {
 export const BottomImage = () => {
   return (
     // Menambahkan bg-[var(--cream)] dan padding responsif
-    <div className="flex justify-center bg-[var(--cream)] pt-4 pb-8 md:pb-12">
+    <div className="flex justify-center pt-4 pb-8 md:pb-12">
       <img
         src={struktur}
         alt="Structure Robotik"

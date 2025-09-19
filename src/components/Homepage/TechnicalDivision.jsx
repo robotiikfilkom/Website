@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import Papa from 'papaparse';
-import { motion } from 'framer-motion';
+import Papa from "papaparse";
+import { motion } from "framer-motion";
 
 // ====================================================================
 // FUNGSI PENGAMBIL DATA (CUSTOM HOOK)
@@ -25,13 +25,15 @@ function useGoogleSheetData(spreadsheetUrl) {
         Papa.parse(csvText, {
           header: true,
           skipEmptyLines: true,
-          transformHeader: header => header.toLowerCase().trim(),
+          transformHeader: (header) => header.toLowerCase().trim(),
           complete: (results) => {
-            const parsedData = results.data.map(row => ({
-              ...row,
-              id: parseInt(row.id, 10),
-            })).filter(row => row.id && row.title && row.image); // Filter data valid
-            
+            const parsedData = results.data
+              .map((row) => ({
+                ...row,
+                id: parseInt(row.id, 10),
+              }))
+              .filter((row) => row.id && row.title && row.image); // Filter data valid
+
             // Urutkan berdasarkan ID untuk memastikan urutan layout benar
             parsedData.sort((a, b) => a.id - b.id);
             setData(parsedData);
@@ -50,7 +52,6 @@ function useGoogleSheetData(spreadsheetUrl) {
   return { data, loading, error };
 }
 
-
 // ====================================================================
 // Komponen Card (Dibuat lebih responsif)
 // ====================================================================
@@ -58,7 +59,6 @@ const DivisionCard = ({ item }) => {
   return (
     <Link
       to={item.link}
-      // PERBAIKAN: Tinggi kartu dibuat responsif. Lebar diambil dari 'item.widthClass'
       className={`relative rounded-2xl overflow-hidden shadow-lg h-64 md:h-80 flex items-end group cursor-pointer transform transition-all duration-300 hover:scale-105 w-full ${item.widthClass}`}
     >
       <img
@@ -66,7 +66,12 @@ const DivisionCard = ({ item }) => {
         alt={item.title}
         className="absolute inset-0 w-full h-full object-cover z-10 brightness-90 transition-all duration-500 group-hover:brightness-75 group-hover:scale-110"
       />
-      <div className="absolute top-4 right-4 z-30">
+
+      {/* Gradasi ditambahkan untuk memastikan teks selalu terbaca
+      <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 to-transparent z-20"></div> */}
+
+      {/* Ikon panah di pojok kanan atas */}
+      <div className="absolute top-4 right-4 z-40">
         <div className="w-10 h-10 bg-transparent rounded-full flex items-center justify-center border border-[var(--white)] transition-all duration-300 group-hover:-rotate-45 group-hover:bg-[var(--white)]">
           <FontAwesomeIcon
             icon={faArrowRight}
@@ -74,28 +79,41 @@ const DivisionCard = ({ item }) => {
           />
         </div>
       </div>
-      <div className="relative z-20 p-4 w-full flex flex-col justify-end h-full">
-        <div className="absolute inset-x-2 bottom-2 h-24 bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 rounded-xl border border-white/20"></div>
-        <div className="flex flex-col z-20 transition-all duration-300 gap-0 group-hover:gap-1">
-          <h3 className="text-[var(--white)] text-2xl md:text-3xl font-bold drop-shadow-lg font-glancyr transition-all duration-300 mb-2 group-hover:mb-0">
+
+      {/* PERUBAHAN UTAMA DI SINI */}
+      <div className="relative z-30 p-4 w-full">
+        {/* 1. Judul Default (Terlihat saat tidak di-hover) */}
+        <div className="transition-opacity duration-300 group-hover:opacity-0">
+          <h3 className="text-[var(--white)] text-2xl md:text-3xl font-bold font-display drop-shadow-lg">
             {item.title}
           </h3>
-          <p className="text-[var(--white)] text-sm md:text-base font-sfpro opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-full transition-all duration-300 leading-relaxed">
-            {item.desc}
-          </p>
+        </div>
+
+        {/* 2. Panel Info Detail (Terlihat saat di-hover) */}
+        <div className="absolute bottom-4 left-4 right-4">
+          <div className="relative bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-xl border border-white/20 p-4">
+            <div className="flex flex-col gap-0 group-hover:gap-1">
+              <h3 className="text-[var(--white)] text-2xl md:text-3xl font-bold drop-shadow-lg font-display transition-all duration-300">
+                {item.title}
+              </h3>
+              <p className="text-[var(--white)] text-sm md:text-base font-sans opacity-0 max-h-0 group-hover:opacity-100 group-hover:max-h-full transition-all duration-300 leading-relaxed">
+                {item.desc}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </Link>
   );
 };
 
-
 // ====================================================================
 // Komponen Utama (Integrasi, Layout Dinamis, & Responsif)
 // ====================================================================
 export default function TechnicalDivision() {
-  const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeH6GPT_zewQGOeZcDKZQowl7FVcSiQZr-JDSwSL9tnQpIGhI_2a8wk5YhTWMNRUxXTj5kZDxQ-b6T/pub?gid=921487176&single=true&output=csv';
-  
+  const SPREADSHEET_URL =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQeH6GPT_zewQGOeZcDKZQowl7FVcSiQZr-JDSwSL9tnQpIGhI_2a8wk5YhTWMNRUxXTj5kZDxQ-b6T/pub?gid=921487176&single=true&output=csv";
+
   const { data, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
 
   // Definisikan kelas lebar yang spesifik untuk layout 2x2
@@ -107,14 +125,24 @@ export default function TechnicalDivision() {
     widthClass: widthClasses[index],
   }));
 
-  if (loading) return <section className="bg-[var(--cream)] py-40 text-center"><p>Loading divisions...</p></section>;
-  if (error) return <section className="bg-[var(--cream)] py-40 text-center"><p className="text-red-500">Error: {error}</p></section>;
+  if (loading)
+    return (
+      <section className="py-40 text-center">
+        <p>Loading divisions...</p>
+      </section>
+    );
+  if (error)
+    return (
+      <section className="py-40 text-center">
+        <p className="text-red-500">Error: {error}</p>
+      </section>
+    );
 
   return (
     // PERBAIKAN: Padding dibuat responsif
-    <section className="bg-[var(--cream)] py-20 md:py-28 px-4 sm:px-6 md:px-8 lg:px-12">
+    <section className="py-20 md:py-28 px-4 sm:px-6 md:px-8 lg:px-12">
       <div className="w-full mx-auto max-w-7xl">
-        <motion.div 
+        <motion.div
           className="flex flex-col lg:flex-row items-start lg:items-center gap-8 lg:gap-16 mb-16 md:mb-20"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -125,7 +153,7 @@ export default function TechnicalDivision() {
             <h3 className="text-base font-bold font-glancyr uppercase tracking-widest text-[var(--black)]">
               [Technical Division]
             </h3>
-            <p className="text-3xl md:text-4xl font-bold font-display leading-snug text-[var(--black)]">
+            <p className="text-3xl md:text-4xl font-bold font-glancyr leading-snug text-[var(--black)]">
               The core pillars of our technological development.
             </p>
           </div>
@@ -139,7 +167,7 @@ export default function TechnicalDivision() {
         </motion.div>
 
         {/* PERBAIKAN: Layout grid dibuat dinamis dari data */}
-        <motion.div 
+        <motion.div
           className="flex flex-col gap-4 md:gap-6"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -148,11 +176,15 @@ export default function TechnicalDivision() {
         >
           {/* Baris Pertama */}
           <div className="flex flex-col md:flex-row w-full gap-4 md:gap-6">
-            {divisionCardData.slice(0, 2).map(item => <DivisionCard key={item.id} item={item} />)}
+            {divisionCardData.slice(0, 2).map((item) => (
+              <DivisionCard key={item.id} item={item} />
+            ))}
           </div>
           {/* Baris Kedua */}
           <div className="flex flex-col md:flex-row w-full gap-4 md:gap-6">
-            {divisionCardData.slice(2, 4).map(item => <DivisionCard key={item.id} item={item} />)}
+            {divisionCardData.slice(2, 4).map((item) => (
+              <DivisionCard key={item.id} item={item} />
+            ))}
           </div>
         </motion.div>
       </div>

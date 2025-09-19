@@ -6,7 +6,7 @@ export default {
       // Properti yang sudah ada
       fontFamily: {
         sfpro: ["SF Pro Text", "sans-serif"],
-        glancyr: ["Glancyr", "sans-serif"],
+        glancyr: ["Glancyr", "serif"],
       },
       colors: {
         black: "#0B0C0C",

@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useLocation, useNavigate } from "react-router-dom";
 import logo from '/src/assets/img/logo.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { motion, AnimatePresence } from "framer-motion";
 
+// ====================================================================
+// KOMPONEN-KOMPONEN PEMBANTU
+// ====================================================================
+
 function AnimatedNavLink({ to, children, onClick, className = '' }) {
+  // ... (Kode komponen ini tidak berubah)
   return (
     <NavLink
       to={to}
@@ -29,6 +34,32 @@ function AnimatedNavLink({ to, children, onClick, className = '' }) {
   );
 }
 
+function RefreshableNavLink({ to, children, onClick, className }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleNavClick = (e) => {
+    if (location.pathname === to) {
+      e.preventDefault();
+      // PERBAIKAN UTAMA DI SINI: Tambahkan perintah scroll ke atas
+      window.scrollTo(0, 0);
+      navigate(0); // Lalu refresh halaman
+    }
+    if (onClick) {
+      onClick();
+    }
+  };
+
+  return (
+    <AnimatedNavLink to={to} onClick={handleNavClick} className={className}>
+      {children}
+    </AnimatedNavLink>
+  );
+}
+
+// ====================================================================
+// DATA NAVIGASI
+// ====================================================================
 const navItems = [
   { type: 'link', to: "/", text: "Home" },
   { type: 'link', to: "/about", text: "About" },
@@ -48,24 +79,26 @@ const divisionLinks = [
   { to: '/division/quadcopter', text: 'Quadcopter' },
 ];
 
+// ====================================================================
+// KOMPONEN UTAMA NAVBAR
+// ====================================================================
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDivisionOpen, setIsDivisionOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const divisionRef = useRef(null);
 
+  // ... (semua hook useEffect tidak berubah)
   useEffect(() => {
     if (isOpen) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
     return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
-
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
   useEffect(() => {
     function handleClickOutside(event) {
       if (divisionRef.current && !divisionRef.current.contains(event.target)) {
@@ -87,10 +120,11 @@ export default function Navbar() {
       <nav className={`flex justify-between items-center px-6 md:px-12 lg:px-20 py-4 text-sm transition-all duration-300 ease-in-out shadow-lg ${scrolled ? 'bg-[var(--main-blue)]/80 backdrop-blur-lg' : 'bg-[var(--main-blue)]'}`}>
         <NavLink to="/"><img src={logo} alt="ROBOTIIK Logo" className="h-8 w-24" /></NavLink>
 
+        {/* --- MENU DESKTOP --- */}
         <div className="hidden md:flex items-center space-x-6 text-[var(--white)]">
           {navItems.map((item) => {
             if (item.type === 'link') {
-              return <AnimatedNavLink key={item.to} to={item.to}>{item.text}</AnimatedNavLink>;
+              return <RefreshableNavLink key={item.to} to={item.to}>{item.text}</RefreshableNavLink>;
             }
             if (item.type === 'dropdown') {
               return (
@@ -122,11 +156,13 @@ export default function Navbar() {
           })}
         </div>
 
+        {/* Tombol Burger Mobile */}
         <div className="md:hidden">
           <button onClick={() => setIsOpen(true)} className="text-[var(--white)] text-2xl"><FontAwesomeIcon icon={faBars} /></button>
         </div>
       </nav>
 
+      {/* --- MENU MOBILE OVERLAY --- */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -136,8 +172,9 @@ export default function Navbar() {
           >
             <button onClick={() => setIsOpen(false)} className="absolute top-7 right-6 text-[var(--white)] text-3xl"><FontAwesomeIcon icon={faTimes} /></button>
             <div className="flex flex-col items-center justify-center h-full text-[var(--white)]">
-              <AnimatedNavLink to="/" onClick={() => setIsOpen(false)} className="text-3xl my-4">Home</AnimatedNavLink>
-              <AnimatedNavLink to="/about" onClick={() => setIsOpen(false)} className="text-3xl my-4">About</AnimatedNavLink>
+              {navItems.filter(item => item.type === 'link').map(link => (
+                 <RefreshableNavLink key={link.to} to={link.to} onClick={() => setIsOpen(false)} className="text-3xl my-4">{link.text}</RefreshableNavLink>
+              ))}
               <div className="w-48 h-px bg-white/20 my-4"></div>
               <h4 className="text-xl font-bold text-white/50 mb-2">Divisions</h4>
               <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-center">
@@ -147,9 +184,6 @@ export default function Navbar() {
                    </Link>
                  ))}
               </div>
-              <div className="w-48 h-px bg-white/20 my-4"></div>
-              <AnimatedNavLink to="/achievement" onClick={() => setIsOpen(false)} className="text-3xl my-4">Achievements</AnimatedNavLink>
-              <AnimatedNavLink to="/partners" onClick={() => setIsOpen(false)} className="text-3xl my-4">Partners</AnimatedNavLink>
             </div>
           </motion.div>
         )}

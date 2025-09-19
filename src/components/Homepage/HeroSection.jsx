@@ -119,7 +119,7 @@ export default function HeroSection() {
         >
           <div className="flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
             <CtaButton />
-            <p className="font-sans max-w-sm sm:max-w-md text-sm sm:text-base text-white/80">
+            <p className="font-glancyr max-w-sm sm:max-w-md text-sm sm:text-base text-white/80">
               Discover the captivating world of robotics where innovation,
               cross-division collaboration, and limitless exploration come to life.
             </p>

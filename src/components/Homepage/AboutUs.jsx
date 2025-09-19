@@ -28,7 +28,7 @@ export default function AboutUs() {
 
   return (
     // PERBAIKAN: Latar belakang dihapus agar menjadi transparan
-    <section className="bg-[var(--cream)] text-black py-20 md:py-28 px-4 sm:px-6 md:px-8">
+    <section className="text-black py-20 md:py-28 px-4 sm:px-6 md:px-8">
       <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
         <div className="lg:col-span-1 text-center lg:text-left">
           
@@ -71,7 +71,7 @@ export default function AboutUs() {
               to="/about"
               className="inline-flex items-center gap-3 text-main-blue font-semibold group"
             >
-              <span className="text-lg group-hover:underline">Learn More</span>
+              <span className="text-lg font-glancyr group-hover:underline">Learn More</span>
               <FontAwesomeIcon
                 icon={faArrowRight}
                 className="transition-transform duration-300 group-hover:translate-x-1"

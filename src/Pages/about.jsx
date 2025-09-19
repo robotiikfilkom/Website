@@ -5,12 +5,12 @@ import AboutUs from "../components/About/aboutus";
 
 export default function About() {
   return (
-    <div className="bg-[#f0e9cd] text-black text-xl leading-relaxed">
+    <div className="bg-[var(--cream)] leading-relaxed">
       <TopImage />
       <BottomImage />
-      <div className="space-y-8">
-        <AboutUs titleClass="text-xl font-bold" />
-        <VisionMission titleClass="text-xl font-bold" />
+      <div className="space-y-8 text-[var(--black)]">
+        <AboutUs titleClass="text-xl font-bold font-glancyr" />
+        <VisionMission titleClass="text-xl font-bold font-glancyr" />
       </div>
     </div>
   );

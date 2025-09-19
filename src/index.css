@@ -53,3 +53,21 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: var(--blue); /* Warna saat di-hover */
 }
+
+.robotics-bg {
+  --grid-color: rgba(0, 31, 63, 0.07);
+  background-color: var(--cream);
+  background-image:
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 200px 200px;
+}
+
+.elegant-wave-bg {
+  --wave-color: rgba(0, 31, 63, 0.06); /* Warna main-blue dengan opacity sangat rendah */
+  background-color: var(--cream);
+  background-image:
+    radial-gradient(ellipse at 20% 80%, var(--wave-color) 20%, transparent 100%),
+    radial-gradient(ellipse at 80% 30%, var(--wave-color) 15%, transparent 100%),
+    radial-gradient(ellipse at 50% 50%, var(--wave-color) 10%, transparent 100%);
+}

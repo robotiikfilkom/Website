@@ -30,7 +30,7 @@ const AboutUs = () => {
 
   return (
     // PERBAIKAN: Background dan padding dibuat responsif
-    <section className="bg-[var(--cream)] w-full px-4 sm:px-6 md:px-8 lg:px-12 py-20 md:py-28">
+    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-20 md:py-28">
       
       {/* PERBAIKAN: Layout diubah menjadi flex-col (mobile) dan lg:flex-row (desktop) */}
       <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12 max-w-7xl mx-auto">
@@ -44,7 +44,7 @@ const AboutUs = () => {
           viewport={{ once: true }}
         >
           {/* PERBAIKAN: whitespace-nowrap dihapus, font-size responsif */}
-          <h2 className="text-2xl sm:text-3xl font-bold font-display uppercase tracking-wider text-left">[About Us]</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold font-glancyr uppercase tracking-wider text-left">[About Us]</h2>
         </motion.div>
 
         {/* Kolom Paragraf */}
@@ -56,7 +56,7 @@ const AboutUs = () => {
           viewport={{ once: true }}
         >
           {/* PERBAIKAN: text-justify hanya untuk desktop, font-weight & size disesuaikan */}
-          <div className="space-y-4 text-left lg:text-justify leading-relaxed font-sfpro text-base md:text-lg">
+          <div className="space-y-4 text-left font-sfpro lg:text-justify leading-relaxed font-sfpro text-base md:text-lg">
             <p>
               ROBOTIK, an abbreviation of Robotics Faculty of Computer Science, Brawijaya University,
               is a Semi-Autonomous Institution (LSO) that functions as a research center for students in

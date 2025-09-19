@@ -1,19 +1,73 @@
-import React, { useState, useEffect } from "react";
-import RandomNumber from "../../utils/Randomnumber";
+import React, { useState, useEffect, useCallback } from 'react';
+import Papa from 'papaparse';
+import RandomNumber from '../../utils/Randomnumber'; // Assuming path is correct
 
+// ====================================================================
+// FUNGSI PENGAMBIL DATA (CUSTOM HOOK)
+// ====================================================================
+function useGoogleSheetData(spreadsheetUrl) {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchData = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    fetch(spreadsheetUrl, { cache: "no-cache" })
+      .then(response => {
+        if (!response.ok) throw new Error("Gagal mengambil data Spreadsheet.");
+        return response.text();
+      })
+      .then(csvText => {
+        Papa.parse(csvText, {
+          header: true,
+          skipEmptyLines: true,
+          transformHeader: header => header.toLowerCase().trim(),
+          complete: (results) => {
+            setData(results.data);
+          },
+          error: (err) => setError(`Gagal memproses CSV: ${err.message}`),
+        });
+      })
+      .catch(err => {
+        console.error("Fetch error:", err);
+        setError(err.message);
+      })
+      .finally(() => setLoading(false));
+  }, [spreadsheetUrl]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  return { data, loading, error };
+}
+
+// ====================================================================
+// KOMPONEN UTAMA
+// ====================================================================
 export default function PartnersStats() {
+  // Ganti dengan URL CSV dari sheet "Stats" Anda
+  const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeH6GPT_zewQGOeZcDKZQowl7FVcSiQZr-JDSwSL9tnQpIGhI_2a8wk5YhTWMNRUxXTj5kZDxQ-b6T/pub?gid=1474762779&single=true&output=csv';
+  
+  const { data: statsData, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsMounted(true);
     }, 100);
-
     return () => clearTimeout(timer);
   }, []);
 
-  const cardTransitionClasses =
-    "transition-all duration-700 ease-in-out transform";
+  // Fungsi untuk mencari nilai berdasarkan ID, dengan fallback 0
+  const getStatValue = (id) => {
+    if (loading || error) return 0;
+    const stat = statsData.find(item => item.id?.toLowerCase().trim() === id.toLowerCase());
+    return stat ? parseInt(stat.value, 10) : 0;
+  };
+
+  const cardTransitionClasses = "transition-all duration-700 ease-in-out transform";
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
@@ -23,7 +77,7 @@ export default function PartnersStats() {
         }`}
       >
         <div className="text-3xl sm:text-4xl md:text-5xl font-bold">
-          <RandomNumber n={95} />%
+          <RandomNumber n={getStatValue('Achievement')} />+
         </div>
         <div className="text-sm mt-1">Achievement</div>
       </div>
@@ -35,7 +89,7 @@ export default function PartnersStats() {
         style={{ transitionDelay: "150ms" }}
       >
         <div className="text-3xl sm:text-4xl md:text-5xl font-bold">
-          <RandomNumber n={72} />+
+          <RandomNumber n={getStatValue('Engagement')} />+
         </div>
         <div className="text-sm mt-1">Engagement</div>
       </div>
@@ -47,7 +101,7 @@ export default function PartnersStats() {
         style={{ transitionDelay: "300ms" }}
       >
         <div className="text-3xl sm:text-4xl md:text-5xl font-bold">
-          <RandomNumber n={250} />+
+          <RandomNumber n={getStatValue('Member')} />+
         </div>
         <div className="text-sm mt-1">Member</div>
       </div>

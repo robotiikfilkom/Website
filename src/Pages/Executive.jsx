@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import Papa from 'papaparse';
+import { motion } from 'framer-motion';
 
 // ====================================================================
-// FUNGSI PENGAMBIL DATA (CUSTOM HOOK) - Tidak berubah
+// FUNGSI PENGAMBIL DATA (CUSTOM HOOK)
 // ====================================================================
 function useGoogleSheetData(spreadsheetUrl) {
   const [data, setData] = useState([]);
@@ -31,12 +32,11 @@ function useGoogleSheetData(spreadsheetUrl) {
           skipEmptyLines: true,
           transformHeader: header => header.toLowerCase().trim(),
           complete: (results) => {
-            // Menambahkan parseInt pada ID saat parsing
             const parsedData = results.data.map(row => ({
                 ...row,
                 id: parseInt(row.id, 10)
             }));
-            setData(parsedData);
+            setData(parsedData.reverse());
           },
           error: (err) => setError(`Gagal memproses CSV: ${err.message}`),
         });
@@ -56,20 +56,37 @@ function useGoogleSheetData(spreadsheetUrl) {
 }
 
 // ====================================================================
-// KOMPONEN-KOMPONEN KARTU - ActivityCard diubah sedikit
+// KOMPONEN-KOMPONEN KARTU
 // ====================================================================
 const MemberCard = ({ member }) => (
-  <div className="bg-white/5 rounded-2xl p-6 text-center group">
-    <div className="w-32 h-32 rounded-full mx-auto overflow-hidden mb-4 border-2 border-white/10">
-      <img src={member.image} alt={member.name} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+  <div className="relative rounded-2xl overflow-hidden shadow-lg h-[500px] flex items-end group cursor-pointer transform transition-all duration-300 hover:scale-105">
+    <img src={member.image} alt={member.name} className="absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-110" />
+    <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
+    <div className="relative z-20 p-4 w-full flex flex-col justify-end h-full">
+      <div className="relative p-4 rounded-xl transition-all duration-300">
+        <div className="absolute inset-0 bg-white/10 backdrop-blur-md z-10 rounded-xl border border-white/20"></div>
+        <div className="relative z-20 flex flex-col items-start">
+          <div className="flex items-center flex-wrap gap-2 mb-2">
+            {member.position && (
+              <p className="text-xs font-semibold text-[var(--white)] border border-[var(--white)] font-sans rounded-lg px-2 py-0.5">
+                {member.position}
+              </p>
+            )}
+            {member.major && (
+              <p className="text-xs font-semibold text-[var(--black)] bg-[var(--white)] font-sans rounded-lg px-2 py-0.5">
+                {member.major}
+              </p>
+            )}
+          </div>
+          <h3 className="text-[var(--white)] text-2xl font-bold drop-shadow-lg font-display">
+            {member.name}
+          </h3>
+        </div>
+      </div>
     </div>
-    <h3 className="text-xl font-bold font-display text-[var(--white)]">{member.name}</h3>
-    <p className="text-sm text-[var(--orange)] font-semibold">{member.position}</p>
-    <p className="text-xs text-white/60 mt-1">{member.major}</p>
   </div>
 );
 
-// Menerima prop 'widthClass' bukan dari 'item'
 const ActivityCard = ({ item, widthClass }) => {
   return (
     <Link 
@@ -88,6 +105,7 @@ const ActivityCard = ({ item, widthClass }) => {
   );
 };
 
+
 // ====================================================================
 // KOMPONEN UTAMA HALAMAN EXECUTIVE
 // ====================================================================
@@ -96,76 +114,178 @@ export default function Executive() {
   
   const { data: allData, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
 
-  const leaders = allData.filter(item => item.category === 'leader');
-  const staff = allData.filter(item => item.category === 'staff');
-  const activities = allData.filter(item => item.category === 'activity');
+  const leaders = allData.filter(item => item.category?.toLowerCase().trim() === 'leader');
+  const staff = allData.filter(item => item.category?.toLowerCase().trim() === 'staff');
+  const activities = allData.filter(item => item.category?.toLowerCase().trim() === 'activity');
   
+  // 1. Ambil data deskripsi dari sheet
+  const divisionInfo = allData.find(item => item.category?.toLowerCase().trim() === 'division_info');
+  const responsibilitiesText = divisionInfo ? divisionInfo.description : "Deskripsi tanggung jawab belum tersedia.";
+
   const getActivityWidthClass = (activityId) => {
     const id = parseInt(activityId, 10);
-    if (id === 1 || id === 4) {
-      return 'md:w-3/5';
-    }
-    if (id === 2 || id === 3) {
-      return 'md:w-2/5';
-    }
-    return 'md:w-1/2'; 
+    if (id === 1 || id === 4) return "md:w-3/5";
+    if (id === 2 || id === 3) return "md:w-2/5";
+    return "md:w-1/2";
   };
   
   if (loading) return <div className="min-h-screen bg-[var(--main-blue)] text-white flex items-center justify-center"><p>Loading Division Data...</p></div>;
   if (error) return <div className="min-h-screen bg-[var(--main-blue)] text-white flex items-center justify-center"><p className="text-red-400">{error}</p></div>;
 
+  // Definisikan varian animasi
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      // PERBAIKAN UTAMA: Mengganti nilai 'ease' yang salah
+      transition: { duration: 0.8, ease: "easeOut" } 
+    },
+  };
+
+  const cardContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.2,
+      },
+    },
+  };
+  
+  const cardVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
+  };
+
   return (
     <div className="min-h-screen bg-[var(--main-blue)] text-white pt-32 pb-16 px-4 sm:px-8">
       <main className="max-w-6xl mx-auto">
         
-        <header className="text-center mb-16">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-[var(--orange)]">
-            Executive Board
+        <motion.header 
+          className="text-center mb-16"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-[var(--white)]">
+            Executive
           </h1>
-        </header>
+        </motion.header>
 
-        <section className="mb-20">
-          <div className="flex justify-center flex-wrap gap-8">
-            {leaders.map(member => <MemberCard key={member.id} member={member} />)}
-          </div>
-        </section>
+        <motion.section 
+          className="mb-20"
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+        >
+          <h2 className="text-3xl font-display font-bold mb-8 text-center">Leadership</h2>
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto"
+            variants={cardContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            {leaders.map(member => (
+              <motion.div key={member.id} variants={cardVariants}>
+                <MemberCard member={member} />
+              </motion.div>
+            ))}
+          </motion.div>
+        </motion.section>
 
         {staff.length > 0 && (
-          <section className="mb-20">
+          <motion.section 
+            className="mb-20"
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+          >
             <h2 className="text-3xl font-display font-bold mb-8 text-center">Our Staff</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {staff.map(member => <MemberCard key={member.id} member={member} />)}
-            </div>
-          </section>
+            <motion.div 
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+              variants={cardContainerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              {staff.map(member => (
+                <motion.div key={member.id} variants={cardVariants}>
+                  <MemberCard member={member} />
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.section>
         )}
 
-        <section className="mb-20 bg-black/20 p-8 rounded-2xl text-center">
-            <h2 className="text-3xl font-display font-bold mb-4">Our Responsibilities</h2>
-            <p className="max-w-3xl mx-auto text-white/80 leading-relaxed">
-              The Executive Board is the core of ROBOTIIK, responsible for setting the vision, making strategic decisions, and ensuring all divisions work in synergy towards a common goal. Our main tasks include defining the organization's long-term vision, coordinating all activities, managing external relations, and ensuring organizational health.
+        <motion.section 
+          className="mb-20 bg-black/20 p-8 rounded-2xl text-center"
+          initial={{ opacity: 0, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true, amount: 0.5 }}
+        >
+            <h2 className="text-3xl font-display font-bold mb-4">
+              Our Responsibilities
+            </h2>
+            {/* 2. Gunakan teks dari variabel */}
+            <p className="w-full mx-auto text-white/80 leading-relaxed">
+              {responsibilitiesText}
             </p>
-        </section>
+        </motion.section>
         
         {activities.length > 0 && (
-          <section>
+          <motion.section
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+          >
             <h2 className="text-3xl font-display font-bold mb-8 text-center">Division Activities</h2>
             <div className="flex flex-col gap-6">
-              <div className="flex flex-col sm:flex-row w-full gap-6">
+              <motion.div 
+                className="flex flex-col sm:flex-row w-full gap-6"
+                variants={cardContainerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
                 {activities.find(a => a.id === 1) && 
-                  <ActivityCard item={activities.find(a => a.id === 1)} widthClass={getActivityWidthClass(1)} />}
+                  <motion.div variants={cardVariants} className="w-full sm:w-3/5">
+                    <ActivityCard item={activities.find(a => a.id === 1)} widthClass="w-full" />
+                  </motion.div>
+                }
                 {activities.find(a => a.id === 2) && 
-                  <ActivityCard item={activities.find(a => a.id === 2)} widthClass={getActivityWidthClass(2)} />}
-              </div>
-              <div className="flex flex-col sm:flex-row w-full gap-6">
+                  <motion.div variants={cardVariants} className="w-full sm:w-2/5">
+                    <ActivityCard item={activities.find(a => a.id === 2)} widthClass="w-full" />
+                  </motion.div>
+                }
+              </motion.div>
+              <motion.div 
+                className="flex flex-col sm:flex-row w-full gap-6"
+                variants={cardContainerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
                 {activities.find(a => a.id === 3) && 
-                  <ActivityCard item={activities.find(a => a.id === 3)} widthClass={getActivityWidthClass(3)} />}
+                  <motion.div variants={cardVariants} className="w-full sm:w-2/5">
+                    <ActivityCard item={activities.find(a => a.id === 3)} widthClass="w-full" />
+                  </motion.div>
+                }
                 {activities.find(a => a.id === 4) && 
-                  <ActivityCard item={activities.find(a => a.id === 4)} widthClass={getActivityWidthClass(4)} />}
-              </div>
+                  <motion.div variants={cardVariants} className="w-full sm:w-3/5">
+                    <ActivityCard item={activities.find(a => a.id === 4)} widthClass="w-full" />
+                  </motion.div>
+                }
+              </motion.div>
             </div>
-          </section>
+          </motion.section>
         )}
-
       </main>
     </div>
   );

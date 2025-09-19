@@ -55,7 +55,7 @@ const LogoSet = ({ brandLogos }) => (
                 key={index}
                 src={logo.src}
                 alt={logo.name}
-                className="h-48 w-auto max-w-48 sm:h-56 sm:max-w-56 md:h-64 md:max-w-64 lg:h-80 lg:max-w-80 rounded-2xl object-cover bg-[var(--cream)] p-2"
+                className="h-48 w-auto max-w-48 sm:h-56 sm:max-w-56 md:h-64 md:max-w-64 lg:h-80 lg:max-w-80 rounded-2xl object-cover p-2"
             />
         ))}
     </div>
@@ -110,7 +110,7 @@ export default function Brandhome() {
 
   return (
     // PERUBAHAN: Latar belakang diubah dari transparan menjadi bg-[var(--cream)]
-    <section className="bg-[var(--cream)] py-16 md:py-20 overflow-hidden">
+    <section className="py-16 md:py-20 overflow-hidden">
       <div className="max-w-7xl mx-auto text-center px-4 sm:px-6 lg:px-8">
         
         <motion.h3

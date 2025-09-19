@@ -9,8 +9,12 @@ import Newshome from '../components/Homepage/Newshome';
 
 const Home = () => {
     return (
-        <div className="bg-gradient-to-b from-[var(--main-blue)] via-[#002a5c] to-[var(--cream)]">
-            <HeroSection />
+        // Terapkan kelas 'robotics-bg' di sini
+        <div className="robotics-bg">
+            <div className='bg-[var(--main-blue)]'>
+                <HeroSection />
+            </div>            
+            {/* Sisa komponen akan berada di atas background cream berpola */}
             <AboutUs />
             <ImageMarquee />
             <TechnicalDivision />
