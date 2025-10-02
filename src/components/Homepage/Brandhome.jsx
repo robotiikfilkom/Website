@@ -2,9 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import Papa from 'papaparse';
 
-// ====================================================================
-// FUNGSI PENGAMBIL DATA (CUSTOM HOOK)
-// ====================================================================
 function useGoogleSheetData(spreadsheetUrl) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,10 +41,6 @@ function useGoogleSheetData(spreadsheetUrl) {
   return { data, loading, error };
 }
 
-
-// ====================================================================
-// Komponen untuk me-render satu set logo
-// ====================================================================
 const LogoSet = ({ brandLogos }) => (
     <div className="flex items-center flex-shrink-0 gap-4 sm:gap-6 md:gap-8">
         {brandLogos.map((logo, index) => (
@@ -61,10 +54,6 @@ const LogoSet = ({ brandLogos }) => (
     </div>
 );
 
-
-// ====================================================================
-// Komponen Utama
-// ====================================================================
 export default function Brandhome() {
   const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=1831910622&single=true&output=csv';
   
@@ -109,7 +98,6 @@ export default function Brandhome() {
   };
 
   return (
-    // PERUBAHAN: Latar belakang diubah dari transparan menjadi bg-[var(--cream)]
     <section className="py-16 md:py-20 overflow-hidden">
       <div className="max-w-7xl mx-auto text-center px-4 sm:px-6 lg:px-8">
         

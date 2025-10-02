@@ -3,16 +3,14 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import Papa from "papaparse";
-import { motion } from "framer-motion"; // Impor motion
+import { motion } from "framer-motion"; 
 
-// FUNGSI PENGAMBIL DATA (CUSTOM HOOK) - Tidak ada perubahan
 function useGoogleSheetData(spreadsheetUrl) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchData = useCallback(() => {
-    // ... isi hook sama seperti sebelumnya
     setLoading(true);
     setError(null);
     fetch(spreadsheetUrl, { cache: "no-cache" })
@@ -55,9 +53,7 @@ function useGoogleSheetData(spreadsheetUrl) {
   return { data, loading, error };
 }
 
-// KOMPONEN CARD - Tidak ada perubahan
 const NewsCard = ({ item }) => {
-  // ... isi komponen Card sama seperti sebelumnya
   return (
     <a
       href={item.link}
@@ -80,21 +76,15 @@ const NewsCard = ({ item }) => {
           </div>
         </div>
         <div className="relative z-20 p-4 w-full flex flex-col justify-end h-full">
-          {/* Gradasi ditambahkan untuk memastikan teks default selalu terbaca */}
           <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 to-transparent z-20"></div>
 
-          {/* ====================================================================
-      PERBAIKAN UTAMA DI SINI
-  ==================================================================== */}
-
-          {/* 1. Judul Default (Terlihat saat tidak di-hover) */}
+        
           <div className="relative z-30 transition-opacity duration-300 group-hover:opacity-0">
             <h3 className="text-[var(--white)] text-2xl font-bold font-display drop-shadow-lg break-words">
               {item.title}
             </h3>
           </div>
 
-          {/* 2. Panel Info Detail (Terlihat saat di-hover) */}
           <div className="absolute bottom-4 left-4 right-4 z-30">
             <div className="relative bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-xl border border-white/20 p-4">
               <div className="flex flex-col gap-0 group-hover:gap-1">
@@ -113,9 +103,6 @@ const NewsCard = ({ item }) => {
   );
 };
 
-// ====================================================================
-// KOMPONEN UTAMA
-// ====================================================================
 export default function Newshome() {
   const SPREADSHEET_URL =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=1416863627&single=true&output=csv";
@@ -126,7 +113,6 @@ export default function Newshome() {
     error,
   } = useGoogleSheetData(SPREADSHEET_URL);
 
-  // Varian animasi untuk kolom kiri (geser dari kiri)
   const slideInLeftVariant = {
     hidden: { opacity: 0, x: -100 },
     visible: {
@@ -136,7 +122,6 @@ export default function Newshome() {
     },
   };
 
-  // Varian animasi untuk kolom kanan (geser dari kanan)
   const slideInRightVariant = {
     hidden: { opacity: 0, x: 100 },
     visible: {
@@ -146,7 +131,6 @@ export default function Newshome() {
     },
   };
 
-  // Varian animasi untuk scroller (efek skew & scale)
   const scrollerVariant = {
     hidden: { opacity: 0, skewX: 10, scale: 0.95 },
     visible: {
@@ -173,7 +157,6 @@ export default function Newshome() {
     <section className="text-[var(--black)] px-4 sm:px-6 md:px-8 lg:px-12 py-20 md:py-28 overflow-hidden">
       <div className="w-full mx-auto mb-10">
         <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-16">
-          {/* Kolom Kiri diberi animasi geser dari kiri */}
           <motion.div
             className="w-full lg:w-3/5 space-y-8"
             variants={slideInLeftVariant}
@@ -190,7 +173,6 @@ export default function Newshome() {
             </p>
           </motion.div>
 
-          {/* Kolom Kanan diberi animasi geser dari kanan */}
           <motion.div
             className="w-full lg:w-2/5 pt-8 lg:pt-16"
             variants={slideInRightVariant}
@@ -207,7 +189,6 @@ export default function Newshome() {
         </div>
       </div>
 
-      {/* Scroller diberi animasi skew & scale */}
       <motion.div
         className="w-full overflow-x-auto overflow-y-hidden custom-scrollbar"
         variants={scrollerVariant}

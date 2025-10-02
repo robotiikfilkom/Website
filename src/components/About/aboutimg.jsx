@@ -2,17 +2,13 @@ import React from "react";
 import orgStructure from "/src/assets/img/Organizational Structure.png";
 import struktur from "/src/assets/img/Struktur-Robotiik.png";
 
-// Komponen untuk gambar atas (header)
 export const TopImage = () => {
   return (
-    // Menambahkan bg-[var(--cream)] dan padding responsif
-    // *** Catatan: Padding pt-4 pb-8 md:pb-12 dipindahkan ke sini ***
     <div className="flex justify-center pt-16 sm:pt-20 md:pt-24 pb-4">
       <img
         src={orgStructure}
         alt="Organizational Structure"
-        // Menambahkan animasi dan kelas responsif
-        // Ukuran lebar disesuaikan untuk setiap breakpoint, tinggi diatur otomatis
+
         className="
           w-11/12       /* Ukuran default untuk layar sangat kecil (xs) */
           sm:w-11/12      /* [DIKOREKSI] Ukuran untuk layar kecil (sm), agar lebih fit */
@@ -32,16 +28,13 @@ export const TopImage = () => {
   );
 };
 
-// Komponen untuk gambar bawah (struktur)
 export const BottomImage = () => {
   return (
-    // Menambahkan bg-[var(--cream)] dan padding responsif
     <div className="flex justify-center pt-4 pb-8 md:pb-12">
       <img
         src={struktur}
         alt="Structure Robotik"
-        // Menambahkan animasi dan kelas responsif
-        // Ukuran lebar disesuaikan untuk setiap breakpoint, tinggi diatur otomatis
+        
         className="
           w-11/12       /* Ukuran default untuk layar sangat kecil (xs) */
           sm:w-10/12      /* Ukuran untuk layar kecil (sm) */

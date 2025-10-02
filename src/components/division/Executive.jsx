@@ -5,9 +5,6 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import Papa from 'papaparse';
 import { motion } from 'framer-motion';
 
-// ====================================================================
-// FUNGSI PENGAMBIL DATA (CUSTOM HOOK)
-// ====================================================================
 function useGoogleSheetData(spreadsheetUrl) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,9 +52,6 @@ function useGoogleSheetData(spreadsheetUrl) {
   return { data, loading, error };
 }
 
-// ====================================================================
-// KOMPONEN-KOMPONEN KARTU
-// ====================================================================
 const MemberCard = ({ member }) => (
   <div className="relative rounded-2xl overflow-hidden shadow-lg h-[500px] flex items-end group cursor-pointer transform transition-all duration-300 hover:scale-105">
     <img src={member.image} alt={member.name} className="absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-110" />
@@ -105,10 +99,6 @@ const ActivityCard = ({ item, widthClass }) => {
   );
 };
 
-
-// ====================================================================
-// KOMPONEN UTAMA HALAMAN EXECUTIVE
-// ====================================================================
 export default function Executive() {
   const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=1379500681&single=true&output=csv';
   
@@ -118,7 +108,6 @@ export default function Executive() {
   const staff = allData.filter(item => item.category?.toLowerCase().trim() === 'staff');
   const activities = allData.filter(item => item.category?.toLowerCase().trim() === 'activity');
   
-  // 1. Ambil data deskripsi dari sheet
   const divisionInfo = allData.find(item => item.category?.toLowerCase().trim() === 'division_info');
   const responsibilitiesText = divisionInfo ? divisionInfo.description : "Deskripsi tanggung jawab belum tersedia.";
 
@@ -132,13 +121,11 @@ export default function Executive() {
   if (loading) return <div className="min-h-screen bg-[var(--main-blue)] text-white flex items-center justify-center"><p>Loading Division Data...</p></div>;
   if (error) return <div className="min-h-screen bg-[var(--main-blue)] text-white flex items-center justify-center"><p className="text-red-400">{error}</p></div>;
 
-  // Definisikan varian animasi
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { 
       opacity: 1, 
       y: 0,
-      // PERBAIKAN UTAMA: Mengganti nilai 'ease' yang salah
       transition: { duration: 0.8, ease: "easeOut" } 
     },
   };
@@ -232,7 +219,6 @@ export default function Executive() {
             <h2 className="text-3xl font-display font-bold mb-4">
               Our Responsibilities
             </h2>
-            {/* 2. Gunakan teks dari variabel */}
             <p className="w-full mx-auto text-white/80 leading-relaxed">
               {responsibilitiesText}
             </p>

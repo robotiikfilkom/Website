@@ -20,8 +20,6 @@ export default function useAchievements(spreadsheetUrl) {
           header: true,
           skipEmptyLines: true,
           complete: (results) => {
-            // PERBAIKAN UTAMA DI SINI:
-            // Filter hanya mewajibkan 'id' dan 'title'.
             const validData = results.data.filter((row) => row.id && row.title);
             
             const parsedData = validData.map((row) => ({
@@ -29,7 +27,6 @@ export default function useAchievements(spreadsheetUrl) {
               title: row.title,
               desc: row.desc || '',
               image: row.image || '',
-              // Kolom link tetap diambil, meskipun nilainya mungkin kosong.
               link: row.link || null, 
             }));
             setAchievements(parsedData.reverse());

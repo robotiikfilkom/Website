@@ -5,9 +5,6 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import Papa from 'papaparse';
 import { motion } from 'framer-motion';
 
-// ====================================================================
-// FUNGSI PENGAMBIL DATA (CUSTOM HOOK)
-// ====================================================================
 function useGoogleSheetData(spreadsheetUrl) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,9 +52,6 @@ function useGoogleSheetData(spreadsheetUrl) {
   return { data, loading, error };
 }
 
-// ====================================================================
-// KOMPONEN-KOMPONEN KARTU
-// ====================================================================
 const MemberCard = ({ member }) => (
   <div className="relative rounded-2xl overflow-hidden shadow-lg h-96 flex items-end group cursor-pointer transform transition-all duration-300 hover:scale-105">
     <img src={member.image} alt={member.name} className="absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-110" />

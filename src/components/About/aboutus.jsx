@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 
 const AboutUs = () => {
 
-  // Varian animasi untuk judul (muncul dari atas sambil sedikit mengecil)
   const titleVariant = {
     hidden: { opacity: 0, y: -50, scale: 1.1 },
     visible: {
@@ -14,7 +13,6 @@ const AboutUs = () => {
     }
   };
 
-  // Varian animasi untuk paragraf (terungkap dari atas ke bawah)
   const paragraphVariant = {
     hidden: { opacity: 0, height: 0 },
     visible: {
@@ -29,13 +27,10 @@ const AboutUs = () => {
   };
 
   return (
-    // PERBAIKAN: Background dan padding dibuat responsif
     <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-20 md:py-28">
       
-      {/* PERBAIKAN: Layout diubah menjadi flex-col (mobile) dan lg:flex-row (desktop) */}
       <div className="flex flex-col lg:flex-row items-start gap-8 lg:gap-12 max-w-7xl mx-auto">
         
-        {/* Kolom Judul */}
         <motion.div 
           className="w-full lg:w-1/3"
           variants={titleVariant}
@@ -43,11 +38,9 @@ const AboutUs = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {/* PERBAIKAN: whitespace-nowrap dihapus, font-size responsif */}
           <h2 className="text-2xl sm:text-3xl font-bold font-glancyr uppercase tracking-wider text-left">[About Us]</h2>
         </motion.div>
 
-        {/* Kolom Paragraf */}
         <motion.div 
           className="w-full lg:w-2/3"
           variants={paragraphVariant}
@@ -55,7 +48,6 @@ const AboutUs = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {/* PERBAIKAN: text-justify hanya untuk desktop, font-weight & size disesuaikan */}
           <div className="space-y-4 text-left font-sfpro lg:text-justify leading-relaxed font-sfpro text-base md:text-lg">
             <p>
               ROBOTIK, an abbreviation of Robotics Faculty of Computer Science, Brawijaya University,

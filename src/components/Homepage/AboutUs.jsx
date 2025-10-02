@@ -2,11 +2,10 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
-import { motion } from 'framer-motion'; // Impor motion
+import { motion } from 'framer-motion'; 
 
 export default function AboutUs() {
 
-  // Varian animasi untuk judul (masuk dari kiri)
   const titleVariant = {
     hidden: { opacity: 0, x: -50 },
     visible: { 
@@ -16,36 +15,32 @@ export default function AboutUs() {
     }
   };
 
-  // Varian animasi untuk konten (masuk dari bawah)
   const contentVariant = {
     hidden: { opacity: 0, y: 50 },
     visible: { 
       opacity: 1, 
       y: 0,
-      transition: { duration: 0.8, ease: "easeOut", delay: 0.2 } // Delay agar muncul setelah judul
+      transition: { duration: 0.8, ease: "easeOut", delay: 0.2 } 
     }
   };
 
   return (
-    // PERBAIKAN: Latar belakang dihapus agar menjadi transparan
     <section className="text-black py-20 md:py-28 px-4 sm:px-6 md:px-8">
       <div className="w-full mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
         <div className="lg:col-span-1 text-center lg:text-left">
           
-          {/* PERBAIKAN: Judul diberi animasi */}
           <motion.h2
             className="text-4xl sm:text-5xl font-bold font-glancyr leading-tight"
             variants={titleVariant}
             initial="hidden"
-            whileInView="visible" // Aktifkan animasi saat elemen terlihat
-            viewport={{ once: true }} // Animasi hanya berjalan sekali
+            whileInView="visible" 
+            viewport={{ once: true }} 
           >
             About Us
           </motion.h2>
 
         </div>
 
-        {/* PERBAIKAN: Konten diberi animasi */}
         <motion.div
           className="lg:col-span-2 space-y-6"
           variants={contentVariant}

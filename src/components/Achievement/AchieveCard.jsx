@@ -24,10 +24,8 @@ export default function AchievementCard({ item, layoutClass }) {
         className="absolute inset-0 w-full h-full object-cover z-10 brightness-90 transition-all duration-500 group-hover:brightness-75 group-hover:scale-110"
       />
       
-      {/* Gradasi ditambahkan untuk memastikan teks default selalu terbaca */}
       <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 to-transparent z-20"></div>
 
-      {/* Ikon panah di pojok kanan atas */}
       <div className="absolute top-4 right-4 z-40">
         <div className="w-10 h-10 bg-transparent rounded-full flex items-center justify-center border border-[var(--white)] transition-all duration-300 group-hover:-rotate-45 group-hover:bg-[var(--white)]">
           <FontAwesomeIcon
@@ -37,18 +35,13 @@ export default function AchievementCard({ item, layoutClass }) {
         </div>
       </div>
 
-      {/* ====================================================================
-          PERBAIKAN UTAMA DI SINI
-      ==================================================================== */}
       <div className="relative z-30 p-4 w-full">
-        {/* 1. Judul Default (Terlihat saat tidak di-hover) */}
         <div className="transition-opacity duration-300 group-hover:opacity-0">
           <h3 className="text-[var(--white)] text-2xl md:text-3xl font-bold font-display drop-shadow-lg break-words">
             {item.title}
           </h3>
         </div>
 
-        {/* 2. Panel Info Detail (Terlihat saat di-hover) */}
         <div className="absolute bottom-4 left-4 right-4">
           <div className="relative bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-xl border border-white/20 p-4">
             <div className="flex flex-col gap-0 group-hover:gap-1">

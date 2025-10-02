@@ -13,14 +13,14 @@ import Achievement from './Pages/achievement';
 import Partners from './Pages/partners';
 import About from './Pages/about';
 
-import Executive from './Pages/Executive';
-import HRD from './Pages/HRD';
-import GeneralAffair from './Pages/GeneralAffair';
-import MIT from './Pages/MIT';
-import RND from './Pages/RND';
-import Humanoid from './Pages/Humanoid';
-import Amarine from './Pages/Amarine';
-import Quadcopter from './Pages/Quadcopter';
+import Executive from '../src/components/division/Executive';
+import HRD from '../src/components/division/HRD';
+import GeneralAffair from '../src/components/division/GeneralAffair';
+import MIT from '../src/components/division/MIT';
+import RND from '../src/components/division/RND';
+import Humanoid from '../src/components/division/Humanoid';
+import Amarine from '../src/components/division/Amarine';
+import Quadcopter from '../src/components/division/Quadcopter';
 
 
 const App = () => {

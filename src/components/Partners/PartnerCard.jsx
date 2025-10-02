@@ -34,13 +34,10 @@ export default function PartnerCard({
         className="absolute inset-0 w-full h-full object-cover z-0 transition-transform duration-500 ease-in-out group-hover:scale-110"
       />
 
-      {/* Gradasi ditambahkan agar teks lebih mudah dibaca */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
 
-      {/* Konten teks sekarang berada di atas gradasi */}
       <div className="relative z-20 p-4 w-full flex flex-col justify-end h-full">
         <div className="relative bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-xl border border-white/20 p-4">
-          {/* Konten teks berada di dalam panel */}
           <div className="flex flex-col z-20">
             <h3 className="text-[var(--white)] text-xl md:text-2xl font-bold drop-shadow-lg font-display">
               {title}

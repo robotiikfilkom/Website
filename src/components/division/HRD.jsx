@@ -5,9 +5,6 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import Papa from 'papaparse';
 import { motion } from 'framer-motion';
 
-// ====================================================================
-// FUNGSI PENGAMBIL DATA (CUSTOM HOOK)
-// ====================================================================
 function useGoogleSheetData(spreadsheetUrl) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,9 +52,6 @@ function useGoogleSheetData(spreadsheetUrl) {
   return { data, loading, error };
 }
 
-// ====================================================================
-// KOMPONEN-KOMPONEN KARTU
-// ====================================================================
 const MemberCard = ({ member }) => (
   <div className="relative rounded-2xl overflow-hidden shadow-lg h-96 flex items-end group cursor-pointer transform transition-all duration-300 hover:scale-105">
     <img src={member.image} alt={member.name} className="absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-110" />
@@ -105,24 +99,17 @@ const ActivityCard = ({ item, widthClass }) => {
   );
 };
 
-// ====================================================================
-// KOMPONEN UTAMA HALAMAN HUMANOID
-// ====================================================================
-export default function Humanoid() {
-  const SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=436057599&single=true&output=csv";
+export default function HRD() {
+  const SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=1299936743&single=true&output=csv";
 
   const { data: allData, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
 
   const leaders = allData.filter(item => item.category?.toLowerCase().trim() === 'leader');
-  const coreTeam = allData.filter(item => item.category?.toLowerCase().trim() === 'core_team');
   const teamMembers = allData.filter(item => item.category?.toLowerCase().trim() === 'team');
   const activities = allData.filter(item => item.category?.toLowerCase().trim() === 'activity');
   const divisionInfo = allData.find(item => item.category?.toLowerCase().trim() === 'division_info');
   const responsibilitiesText = divisionInfo ? divisionInfo.description : "Deskripsi tanggung jawab belum tersedia.";
   
-  const topLeaders = leaders.slice(0, 2);
-  const otherLeaders = leaders.slice(2);
-
   const getActivityWidthClass = (activityId) => {
     const id = parseInt(activityId, 10);
     if (id === 1 || id === 4) return "md:w-3/5";
@@ -135,12 +122,24 @@ export default function Humanoid() {
 
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.8, ease: "easeOut" } 
+    },
   };
+
   const cardContainerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.2 } },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.2,
+      },
+    },
   };
+  
   const cardVariants = {
     hidden: { y: 20, opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { duration: 0.5 } },
@@ -157,67 +156,22 @@ export default function Humanoid() {
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-[var(--white)]">
-            Humanoid
+            Human Resources Development
           </h1>
         </motion.header>
-        
+
         {leaders.length > 0 && (
           <motion.section 
             className="mb-20"
             variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
           >
-            <h2 className="text-3xl font-display font-bold mb-8 text-center">Leadership</h2>
-            
+            <h2 className="text-3xl font-display font-bold mb-8 text-center">Managerial</h2>
             <motion.div 
-              className="flex flex-wrap justify-center gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto"
               variants={cardContainerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}
             >
-              {topLeaders.map(member => (
-                <motion.div 
-                  key={member.id} 
-                  variants={cardVariants}
-                  className="w-full sm:w-[calc(50%-1rem)] max-w-sm"
-                >
-                  <MemberCard member={member} />
-                </motion.div>
-              ))}
-            </motion.div>
-
-            {otherLeaders.length > 0 && (
-              <motion.div 
-                className="flex flex-wrap justify-center gap-8 mt-8"
-                variants={cardContainerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}
-              >
-                {otherLeaders.map(member => (
-                  <motion.div 
-                    key={member.id} 
-                    variants={cardVariants}
-                    className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1.5rem)] max-w-sm"
-                  >
-                    <MemberCard member={member} />
-                  </motion.div>
-                ))}
-              </motion.div>
-            )}
-          </motion.section>
-        )}
-
-        {coreTeam.length > 0 && (
-          <motion.section 
-            className="mb-20"
-            variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }}
-          >
-            <h2 className="text-3xl font-display font-bold mb-8 text-center">Core Team</h2>
-            <motion.div 
-              className="flex flex-wrap justify-center gap-8"
-              variants={cardContainerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}
-            >
-              {coreTeam.map(member => (
-                <motion.div 
-                  key={member.id} 
-                  variants={cardVariants}
-                  className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1.5rem)] max-w-sm"
-                >
+              {leaders.map(member => (
+                <motion.div key={member.id} variants={cardVariants}>
                   <MemberCard member={member} />
                 </motion.div>
               ))}
@@ -239,7 +193,7 @@ export default function Humanoid() {
                 <motion.div 
                   key={member.id} 
                   variants={cardVariants}
-                  className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1.5rem)] max-w-sm"
+                  className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1.5rem)]"
                 >
                   <MemberCard member={member} />
                 </motion.div>

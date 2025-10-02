@@ -5,14 +5,12 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import Papa from "papaparse";
 import { motion } from "framer-motion";
 
-// Custom hook `useAchievements` (tidak ada perubahan)
 function useAchievements(spreadsheetUrl) {
   const [achievements, setAchievements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const fetchData = useCallback(() => {
-    // ... isi hook sama seperti sebelumnya
     setLoading(true);
     setError(null);
     fetch(spreadsheetUrl, { cache: "no-cache" })
@@ -54,9 +52,7 @@ function useAchievements(spreadsheetUrl) {
   return { achievements, loading, error };
 }
 
-// Card (tidak ada perubahan)
 const Card = ({ item }) => {
-  // ... isi komponen Card sama seperti sebelumnya
   return (
     <a
       href={item.link}
@@ -71,19 +67,13 @@ const Card = ({ item }) => {
           className="absolute inset-0 w-full h-full object-cover z-10 bg-black/10 brightness-90 transition-all duration-500 group-hover:brightness-75 group-hover:scale-110"
         />
 
-        {/* Gradasi ditambahkan untuk memastikan teks selalu terbaca
-        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 to-transparent z-20"></div> */}
-
-        {/* PERUBAHAN UTAMA DI SINI */}
         <div className="relative z-30 p-4 w-full flex flex-col justify-end h-full">
-          {/* 1. Judul Default (Terlihat saat tidak di-hover) */}
           <div className="transition-opacity duration-300 group-hover:opacity-0">
             <h3 className="text-[var(--white)] text-2xl font-bold font-display drop-shadow-lg break-words">
               {item.title}
             </h3>
           </div>
 
-          {/* 2. Panel Info Detail (Terlihat saat di-hover) */}
           <div className="absolute bottom-4 left-4 right-4">
             <div className="relative bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-xl border border-white/20 p-4">
               <div className="flex flex-col gap-0 group-hover:gap-1">
@@ -109,10 +99,6 @@ export default function Achievementshome() {
   const [isHoveredExplore, setIsHoveredExplore] = useState(false);
   const recentAchievements = achievements.slice(0, 5);
 
-  // ====================================================================
-  // PERUBAHAN: Varian animasi diganti dengan yang baru dan berbeda
-  // ====================================================================
-  // Varian untuk header dengan efek rotasi 3D
   const headerVariant = {
     hidden: { opacity: 0, rotateX: -45, transformOrigin: "top" },
     visible: {
@@ -125,7 +111,6 @@ export default function Achievementshome() {
     },
   };
 
-  // Varian untuk bagian bawah dengan efek skala (zoom-in)
   const scrollerVariant = {
     hidden: { opacity: 0, scale: 0.9 },
     visible: {
@@ -140,11 +125,10 @@ export default function Achievementshome() {
   };
 
   return (
-    // Tampilan section tidak diubah, hanya animasi
     <section className="text-[var(--black)] px-4 sm:px-6 md:px-8 lg:px-12 py-20 md:py-28 overflow-hidden">
       <motion.div
         className="mx-auto"
-        variants={headerVariant} // Menggunakan varian header
+        variants={headerVariant} 
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}

@@ -2,9 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import Papa from 'papaparse';
 
-// ====================================================================
-// FUNGSI PENGAMBIL DATA (CUSTOM HOOK)
-// ====================================================================
 function useGoogleSheetData(spreadsheetUrl) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,9 +41,6 @@ function useGoogleSheetData(spreadsheetUrl) {
   return { data, loading, error };
 }
 
-// ====================================================================
-// KOMPONEN UNTUK RENDER GAMBAR (Tampilan tidak diubah)
-// ====================================================================
 const MarqueeImages = ({ images }) => (
   <div className="flex flex-shrink-0 gap-4">
     {images.map((image, index) => {
@@ -66,9 +60,6 @@ const MarqueeImages = ({ images }) => (
   </div>
 );
 
-// ====================================================================
-// KOMPONEN UTAMA
-// ====================================================================
 export default function ImageMarquee() {
   const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=891145410&single=true&output=csv';
   

@@ -5,9 +5,6 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import Papa from 'papaparse';
 import { motion } from 'framer-motion';
 
-// ====================================================================
-// FUNGSI PENGAMBIL DATA (CUSTOM HOOK)
-// ====================================================================
 function useGoogleSheetData(spreadsheetUrl) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,9 +52,6 @@ function useGoogleSheetData(spreadsheetUrl) {
   return { data, loading, error };
 }
 
-// ====================================================================
-// KOMPONEN-KOMPONEN KARTU
-// ====================================================================
 const MemberCard = ({ member }) => (
   <div className="relative rounded-2xl overflow-hidden shadow-lg h-96 flex items-end group cursor-pointer transform transition-all duration-300 hover:scale-105">
     <img src={member.image} alt={member.name} className="absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-110" />
@@ -105,9 +99,6 @@ const ActivityCard = ({ item, widthClass }) => {
   );
 };
 
-// ====================================================================
-// KOMPONEN UTAMA HALAMAN QUASCOPTER
-// ====================================================================
 export default function Quadcopter() {
   const SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=962530985&single=true&output=csv";
 

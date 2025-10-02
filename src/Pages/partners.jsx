@@ -5,9 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import emailjs from '@emailjs/browser';
 
-// ====================================================================
-// FUNGSI PENGAMBIL DATA (CUSTOM HOOK)
-// ====================================================================
 function useGoogleSheetData(spreadsheetUrl) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -50,16 +47,12 @@ function useGoogleSheetData(spreadsheetUrl) {
   return { data, loading, error };
 }
 
-// ====================================================================
-// KOMPONEN-KOMPONEN KECIL
-// ====================================================================
 function RandomNumber({ n }) {
   const { number } = useSpring({ from: { number: 0 }, to: n, delay: 200, config: { mass: 1, tension: 20, friction: 10 } });
   return <animated.span>{number.to((val) => val.toFixed(0))}</animated.span>;
 }
 
 function PartnersStats() {
-  // Anda bisa membuat data ini dinamis juga jika perlu
   const stats = [
     { value: 95, label: 'Achievement', suffix: '%' },
     { value: 72, label: 'Engagement', suffix: '+' },
@@ -124,9 +117,6 @@ function PartnerCard({ title, image, description, className, delay = 0 }) {
   );
 }
 
-// ====================================================================
-// KOMPONEN UTAMA HALAMAN PARTNERS
-// ====================================================================
 export default function Partners() {
   const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=1474762779&single=true&output=csv';
   const { data: partnersData, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
@@ -153,8 +143,8 @@ export default function Partners() {
     setFormState({ status: 'submitting', message: '' });
 
     const SERVICE_ID = 'service_d5kvch9';
-    const TEMPLATE_ID = 'template_mtyjrlp'; // Ganti dengan Template ID Anda
-    const PUBLIC_KEY = 'v8tCgfbjACBumAo1N'; // Ganti dengan Public Key Anda
+    const TEMPLATE_ID = 'template_mtyjrlp'; 
+    const PUBLIC_KEY = 'v8tCgfbjACBumAo1N'; 
 
     emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
       .then((result) => {

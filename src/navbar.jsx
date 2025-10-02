@@ -5,12 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faTimes, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { motion, AnimatePresence } from "framer-motion";
 
-// ====================================================================
-// KOMPONEN-KOMPONEN PEMBANTU
-// ====================================================================
-
 function AnimatedNavLink({ to, children, onClick, className = '' }) {
-  // ... (Kode komponen ini tidak berubah)
   return (
     <NavLink
       to={to}
@@ -41,9 +36,8 @@ function RefreshableNavLink({ to, children, onClick, className }) {
   const handleNavClick = (e) => {
     if (location.pathname === to) {
       e.preventDefault();
-      // PERBAIKAN UTAMA DI SINI: Tambahkan perintah scroll ke atas
       window.scrollTo(0, 0);
-      navigate(0); // Lalu refresh halaman
+      navigate(0); 
     }
     if (onClick) {
       onClick();
@@ -57,9 +51,6 @@ function RefreshableNavLink({ to, children, onClick, className }) {
   );
 }
 
-// ====================================================================
-// DATA NAVIGASI
-// ====================================================================
 const navItems = [
   { type: 'link', to: "/", text: "Home" },
   { type: 'link', to: "/about", text: "About" },
@@ -79,16 +70,12 @@ const divisionLinks = [
   { to: '/division/quadcopter', text: 'Quadcopter' },
 ];
 
-// ====================================================================
-// KOMPONEN UTAMA NAVBAR
-// ====================================================================
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDivisionOpen, setIsDivisionOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const divisionRef = useRef(null);
 
-  // ... (semua hook useEffect tidak berubah)
   useEffect(() => {
     if (isOpen) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
@@ -120,7 +107,6 @@ export default function Navbar() {
       <nav className={`flex justify-between items-center px-6 md:px-12 lg:px-20 py-4 text-sm transition-all duration-300 ease-in-out shadow-lg ${scrolled ? 'bg-[var(--main-blue)]/80 backdrop-blur-lg' : 'bg-[var(--main-blue)]'}`}>
         <NavLink to="/"><img src={logo} alt="ROBOTIIK Logo" className="h-8 w-24" /></NavLink>
 
-        {/* --- MENU DESKTOP --- */}
         <div className="hidden md:flex items-center space-x-6 text-[var(--white)]">
           {navItems.map((item) => {
             if (item.type === 'link') {
@@ -156,13 +142,11 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* Tombol Burger Mobile */}
         <div className="md:hidden">
           <button onClick={() => setIsOpen(true)} className="text-[var(--white)] text-2xl"><FontAwesomeIcon icon={faBars} /></button>
         </div>
       </nav>
 
-      {/* --- MENU MOBILE OVERLAY --- */}
       <AnimatePresence>
         {isOpen && (
           <motion.div

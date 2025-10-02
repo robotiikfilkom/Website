@@ -11,19 +11,17 @@ const missionList = [
 ];
 
 const VisionMission = () => {
-  // Varian untuk kontainer grid misi (mengatur stagger)
   const staggerContainerVariant = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1, // Jeda antar setiap kartu misi
-        delayChildren: 0.3, // Mulai animasi anak setelah 0.3 detik
+        staggerChildren: 0.1, 
+        delayChildren: 0.3, 
       },
     },
   };
 
-  // Varian untuk setiap kartu misi (efek flip 3D & scale)
   const itemVariant = {
     hidden: { opacity: 0, scale: 0.5, rotateY: -90 },
     visible: {
@@ -32,12 +30,12 @@ const VisionMission = () => {
       rotateY: 0,
       transition: {
         duration: 0.5,
-        ease: [0.25, 1, 0.5, 1], // Easing custom untuk efek 'pop'
+        ease: [0.25, 1, 0.5, 1], 
       },
     },
   };
 
-  // Varian sederhana untuk Visi dan judul Misi
+  
   const fadeUpVariant = {
     hidden: { opacity: 0, y: 30 },
     visible: {
@@ -48,7 +46,7 @@ const VisionMission = () => {
   };
 
   return (
-    // PERBAIKAN: Komponen dibungkus <section> dengan bg dan padding responsif
+    
     <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 pt-12 pb-20 md:pb-28">
       <div className="max-w-7xl mx-auto">
         {/* Visi */}
@@ -59,12 +57,10 @@ const VisionMission = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {/* PERBAIKAN: Tipografi dan pembatas dibuat responsif */}
           <h2 className="text-3xl sm:text-4xl font-bold font-glancyr mb-4">
             Vision
           </h2>
           <div className="border-b-4 border-[var(--black)] w-24 mx-auto mb-6"></div>
-          {/* PERBAIKAN: Shadow dan tipografi disesuaikan */}
           <div className="relative rounded-lg shadow-md p-6 max-w-3xl mx-auto text-base sm:text-lg leading-relaxed font-sans bg-white/50 backdrop-blur-md border border-white/20 text-[var(--black)]">
             To establish ROBOTIIK as a leading institution in the field of
             robotics and embedded systems, capable of producing high-quality
@@ -72,7 +68,6 @@ const VisionMission = () => {
           </div>
         </motion.div>
 
-        {/* Misi */}
         <div className="mt-20 md:mt-24 text-center">
           <motion.h2
             className="text-3xl sm:text-4xl font-bold font-glancyr mb-4"
@@ -85,7 +80,6 @@ const VisionMission = () => {
           </motion.h2>
           <div className="border-b-4 border-[var(--black)] w-24 mx-auto mb-6"></div>
 
-          {/* Grid Misi dengan animasi berantai */}
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 text-sm sm:text-base"
             variants={staggerContainerVariant}

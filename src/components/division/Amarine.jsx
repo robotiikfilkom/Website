@@ -5,9 +5,6 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import Papa from 'papaparse';
 import { motion } from 'framer-motion';
 
-// ====================================================================
-// FUNGSI PENGAMBIL DATA (CUSTOM HOOK)
-// ====================================================================
 function useGoogleSheetData(spreadsheetUrl) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -55,11 +52,8 @@ function useGoogleSheetData(spreadsheetUrl) {
   return { data, loading, error };
 }
 
-// ====================================================================
-// KOMPONEN-KOMPONEN KARTU
-// ====================================================================
 const MemberCard = ({ member }) => (
-  <div className="relative rounded-2xl overflow-hidden shadow-lg h-[500px] flex items-end group cursor-pointer transform transition-all duration-300 hover:scale-105">
+  <div className="relative rounded-2xl overflow-hidden shadow-lg h-96 flex items-end group cursor-pointer transform transition-all duration-300 hover:scale-105">
     <img src={member.image} alt={member.name} className="absolute inset-0 w-full h-full object-cover z-10 transition-transform duration-500 group-hover:scale-110" />
     <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-black/80 to-transparent z-10"></div>
     <div className="relative z-20 p-4 w-full flex flex-col justify-end h-full">
@@ -105,20 +99,15 @@ const ActivityCard = ({ item, widthClass }) => {
   );
 };
 
-// ====================================================================
-// KOMPONEN UTAMA HALAMAN HRD
-// ====================================================================
-export default function RND() {
-  // 1. Ganti dengan URL CSV dari sheet "HRD" Anda
-  const SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=1217039989&single=true&output=csv";
+export default function Amarine() {
+  const SPREADSHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=1998288693&single=true&output=csv";
 
   const { data: allData, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
 
   const leaders = allData.filter(item => item.category?.toLowerCase().trim() === 'leader');
-  const staff = allData.filter(item => item.category?.toLowerCase().trim() === 'staff');
+  const coreTeam = allData.filter(item => item.category?.toLowerCase().trim() === 'core_team');
+  const teamMembers = allData.filter(item => item.category?.toLowerCase().trim() === 'team');
   const activities = allData.filter(item => item.category?.toLowerCase().trim() === 'activity');
-
-  // 1. Ambil data deskripsi dari sheet
   const divisionInfo = allData.find(item => item.category?.toLowerCase().trim() === 'division_info');
   const responsibilitiesText = divisionInfo ? divisionInfo.description : "Deskripsi tanggung jawab belum tersedia.";
   
@@ -132,7 +121,6 @@ export default function RND() {
   if (loading) return <div className="min-h-screen bg-[var(--main-blue)] text-white flex items-center justify-center"><p>Loading Division Data...</p></div>;
   if (error) return <div className="min-h-screen bg-[var(--main-blue)] text-white flex items-center justify-center"><p className="text-red-400">{error}</p></div>;
 
-  // Definisikan varian animasi
   const sectionVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { 
@@ -162,7 +150,6 @@ export default function RND() {
     <div className="min-h-screen bg-[var(--main-blue)] text-white pt-32 pb-16 px-4 sm:px-8">
       <main className="max-w-6xl mx-auto">
         
-        {/* 2. Ganti teks header sesuai divisi */}
         <motion.header 
           className="text-center mb-16"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -170,50 +157,44 @@ export default function RND() {
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-[var(--white)]">
-            Research and Development
+            Amarine
           </h1>
         </motion.header>
-
-        <motion.section 
-          className="mb-20"
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-        >
-          <h2 className="text-3xl font-display font-bold mb-8 text-center">Managerial</h2>
-          <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-            variants={cardContainerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            {leaders.map(member => (
-              <motion.div key={member.id} variants={cardVariants}>
-                <MemberCard member={member} />
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.section>
-
-        {staff.length > 0 && (
+        
+        {leaders.length > 0 && (
           <motion.section 
             className="mb-20"
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
+            variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
           >
-            <h2 className="text-3xl font-display font-bold mb-8 text-center">The Team</h2>
+            <h2 className="text-3xl font-display font-bold mb-8 text-center">Managerial</h2>
             <motion.div 
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-              variants={cardContainerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
+              className="flex flex-wrap justify-center gap-8"
+              variants={cardContainerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}
             >
-              {staff.map(member => (
+              {leaders.map(member => (
+                <motion.div 
+                  key={member.id} 
+                  variants={cardVariants}
+                  className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1.5rem)] max-w-sm"
+                >
+                  <MemberCard member={member} />
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.section>
+        )}
+        
+        {coreTeam.length > 0 && (
+          <motion.section 
+            className="mb-20"
+            variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }}
+          >
+            <h2 className="text-3xl font-display font-bold mb-8 text-center">Core Team</h2>
+            <motion.div 
+              className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto"
+              variants={cardContainerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              {coreTeam.slice(0, 4).map(member => (
                 <motion.div key={member.id} variants={cardVariants}>
                   <MemberCard member={member} />
                 </motion.div>
@@ -222,64 +203,52 @@ export default function RND() {
           </motion.section>
         )}
 
-        {/* 3. Ganti teks deskripsi sesuai divisi */}
+        {teamMembers.length > 0 && (
+          <motion.section 
+            className="mb-20"
+            variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }}
+          >
+            <h2 className="text-3xl font-display font-bold mb-8 text-center">The Team</h2>
+            <motion.div 
+              className="flex flex-wrap justify-center gap-8"
+              variants={cardContainerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}
+            >
+              {teamMembers.map(member => (
+                <motion.div 
+                  key={member.id} 
+                  variants={cardVariants}
+                  className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1.5rem)] max-w-sm"
+                >
+                  <MemberCard member={member} />
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.section>
+        )}
+        
         <motion.section 
           className="mb-20 bg-black/20 p-8 rounded-2xl text-center"
-          initial={{ opacity: 0, filter: 'blur(10px)' }}
-          whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-          transition={{ duration: 0.7 }}
-          viewport={{ once: true, amount: 0.5 }}
+          initial={{ opacity: 0, filter: 'blur(10px)' }} whileInView={{ opacity: 1, filter: 'blur(0px)' }} transition={{ duration: 0.7 }} viewport={{ once: true, amount: 0.5 }}
         >
             <h2 className="text-3xl font-display font-bold mb-4">Our Responsibilities</h2>
-            <p className="w-full mx-auto text-white/80 leading-relaxed">
+            <p className="max-w-3xl mx-auto text-white/80 leading-relaxed">
               {responsibilitiesText}
             </p>
         </motion.section>
         
         {activities.length > 0 && (
           <motion.section
-            variants={sectionVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
+            variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.1 }}
           >
             <h2 className="text-3xl font-display font-bold mb-8 text-center">Division Activities</h2>
             <div className="flex flex-col gap-6">
-              <motion.div 
-                className="flex flex-col sm:flex-row w-full gap-6"
-                variants={cardContainerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                {activities.find(a => a.id === 1) && 
-                  <motion.div variants={cardVariants} className="w-full sm:w-3/5">
-                    <ActivityCard item={activities.find(a => a.id === 1)} widthClass="w-full" />
-                  </motion.div>
-                }
-                {activities.find(a => a.id === 2) && 
-                  <motion.div variants={cardVariants} className="w-full sm:w-2/5">
-                    <ActivityCard item={activities.find(a => a.id === 2)} widthClass="w-full" />
-                  </motion.div>
-                }
+              <motion.div className="flex flex-col sm:flex-row w-full gap-6" variants={cardContainerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+                {activities.find(a => a.id === 1) && <motion.div variants={cardVariants} className="w-full sm:w-3/5"><ActivityCard item={activities.find(a => a.id === 1)} widthClass="w-full" /></motion.div>}
+                {activities.find(a => a.id === 2) && <motion.div variants={cardVariants} className="w-full sm:w-2/5"><ActivityCard item={activities.find(a => a.id === 2)} widthClass="w-full" /></motion.div>}
               </motion.div>
-              <motion.div 
-                className="flex flex-col sm:flex-row w-full gap-6"
-                variants={cardContainerVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-              >
-                {activities.find(a => a.id === 3) && 
-                  <motion.div variants={cardVariants} className="w-full sm:w-2/5">
-                    <ActivityCard item={activities.find(a => a.id === 3)} widthClass="w-full" />
-                  </motion.div>
-                }
-                {activities.find(a => a.id === 4) && 
-                  <motion.div variants={cardVariants} className="w-full sm:w-3/5">
-                    <ActivityCard item={activities.find(a => a.id === 4)} widthClass="w-full" />
-                  </motion.div>
-                }
+              <motion.div className="flex flex-col sm:flex-row w-full gap-6" variants={cardContainerVariants} initial="hidden" whileInView="visible" viewport={{ once: true }}>
+                {activities.find(a => a.id === 3) && <motion.div variants={cardVariants} className="w-full sm:w-2/5"><ActivityCard item={activities.find(a => a.id === 3)} widthClass="w-full" /></motion.div>}
+                {activities.find(a => a.id === 4) && <motion.div variants={cardVariants} className="w-full sm:w-3/5"><ActivityCard item={activities.find(a => a.id === 4)} widthClass="w-full" /></motion.div>}
               </motion.div>
             </div>
           </motion.section>

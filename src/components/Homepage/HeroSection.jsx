@@ -33,7 +33,6 @@ export default function HeroSection() {
     };
   }, [vantaEffect]);
 
-  // Varian animasi Framer Motion (tidak ada perubahan)
   const line1 = "Satu Visi, Wujud Aksi,";
   const line2 = "Bangga Raih Prestasi";
 
@@ -70,21 +69,13 @@ export default function HeroSection() {
   };
 
   return (
-    // Section utama sekarang hanya sebagai kontainer posisi
     <section className="relative min-h-screen overflow-hidden">
       
-      {/* ==================================================================== */}
-      {/* PERBAIKAN UTAMA DI SINI */}
-      {/* ==================================================================== */}
-      
-      {/* 1. Div khusus untuk Vanta.js di lapisan belakang (z-0) */}
-      {/* Efek blur ditambahkan di sini */}
       <div
         ref={vantaRef}
         className="absolute top-0 left-0 w-full h-full z-0 blur-xs" 
       />
 
-      {/* 2. Wrapper untuk semua konten di lapisan depan (z-10) */}
       <div className="relative z-10 min-h-screen flex flex-col justify-center text-[var(--white)] px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="flex-1 flex flex-col items-center justify-center text-center">
           <motion.h1

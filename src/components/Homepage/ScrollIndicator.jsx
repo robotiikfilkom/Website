@@ -5,7 +5,6 @@ import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 export default function ScrollIndicator() {
   const [isHovered, setIsHovered] = useState(false);
 
-  // Fungsi untuk scroll ke section berikutnya
   const handleScroll = () => {
     window.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
   };

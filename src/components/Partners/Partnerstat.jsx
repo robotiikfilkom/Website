@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Papa from 'papaparse';
-import RandomNumber from '../../utils/Randomnumber'; // Assuming path is correct
+import RandomNumber from '../../utils/Randomnumber'; 
 
-// ====================================================================
-// FUNGSI PENGAMBIL DATA (CUSTOM HOOK)
-// ====================================================================
 function useGoogleSheetData(spreadsheetUrl) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -43,11 +40,7 @@ function useGoogleSheetData(spreadsheetUrl) {
   return { data, loading, error };
 }
 
-// ====================================================================
-// KOMPONEN UTAMA
-// ====================================================================
 export default function PartnersStats() {
-  // Ganti dengan URL CSV dari sheet "Stats" Anda
   const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=1474762779&single=true&output=csv';
   
   const { data: statsData, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
@@ -60,7 +53,6 @@ export default function PartnersStats() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Fungsi untuk mencari nilai berdasarkan ID, dengan fallback 0
   const getStatValue = (id) => {
     if (loading || error) return 0;
     const stat = statsData.find(item => item.id?.toLowerCase().trim() === id.toLowerCase());
