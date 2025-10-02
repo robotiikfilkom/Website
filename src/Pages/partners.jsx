@@ -110,14 +110,12 @@ function PartnerCard({ title, image, description, className, delay = 0 }) {
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10"></div>
       <div className="relative z-20 p-4 w-full">
-        {/* Judul Default (selalu terlihat, menghilang saat hover) */}
         <div className="transition-opacity duration-300 group-hover:opacity-0">
           <h3 className="text-[var(--white)] text-xl md:text-2xl font-bold drop-shadow-lg font-display">
             {title}
           </h3>
         </div>
 
-        {/* Panel Info Detail (muncul saat hover) */}
         <div className="absolute bottom-4 left-4 right-4">
           <div className="relative bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-xl border border-white/20 p-4">
             <div className="flex flex-col z-20">
@@ -182,7 +180,7 @@ export default function Partners() {
       (result) => {
         setFormState({
           status: "success",
-          message: "Thank you! Your message has been sent.",
+          message: "Halo, {{name}} formulir kamu berhasil terkirim. Kami akan menghubungi {{email}} setelah peninjauan.",
         });
         form.current.reset();
         setTimeout(() => setFormState({ status: "idle", message: "" }), 4000);
