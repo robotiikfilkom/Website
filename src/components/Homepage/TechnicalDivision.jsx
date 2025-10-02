@@ -112,7 +112,7 @@ const DivisionCard = ({ item }) => {
 // ====================================================================
 export default function TechnicalDivision() {
   const SPREADSHEET_URL =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vQeH6GPT_zewQGOeZcDKZQowl7FVcSiQZr-JDSwSL9tnQpIGhI_2a8wk5YhTWMNRUxXTj5kZDxQ-b6T/pub?gid=921487176&single=true&output=csv";
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=921487176&single=true&output=csv";
 
   const { data, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
 

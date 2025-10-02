@@ -48,7 +48,7 @@ function useGoogleSheetData(spreadsheetUrl) {
 // ====================================================================
 export default function PartnersStats() {
   // Ganti dengan URL CSV dari sheet "Stats" Anda
-  const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeH6GPT_zewQGOeZcDKZQowl7FVcSiQZr-JDSwSL9tnQpIGhI_2a8wk5YhTWMNRUxXTj5kZDxQ-b6T/pub?gid=1474762779&single=true&output=csv';
+  const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=1474762779&single=true&output=csv';
   
   const { data: statsData, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
   const [isMounted, setIsMounted] = useState(false);

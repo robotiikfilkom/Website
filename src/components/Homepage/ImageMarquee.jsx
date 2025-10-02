@@ -70,7 +70,7 @@ const MarqueeImages = ({ images }) => (
 // KOMPONEN UTAMA
 // ====================================================================
 export default function ImageMarquee() {
-  const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeH6GPT_zewQGOeZcDKZQowl7FVcSiQZr-JDSwSL9tnQpIGhI_2a8wk5YhTWMNRUxXTj5kZDxQ-b6T/pub?gid=891145410&single=true&output=csv';
+  const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=891145410&single=true&output=csv';
   
   const { data: images, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
 

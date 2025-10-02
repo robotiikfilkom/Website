@@ -110,7 +110,7 @@ const ActivityCard = ({ item, widthClass }) => {
 // KOMPONEN UTAMA HALAMAN EXECUTIVE
 // ====================================================================
 export default function Executive() {
-  const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeH6GPT_zewQGOeZcDKZQowl7FVcSiQZr-JDSwSL9tnQpIGhI_2a8wk5YhTWMNRUxXTj5kZDxQ-b6T/pub?gid=1379500681&single=true&output=csv';
+  const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=1379500681&single=true&output=csv';
   
   const { data: allData, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
 
@@ -181,7 +181,7 @@ export default function Executive() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.2 }}
         >
-          <h2 className="text-3xl font-display font-bold mb-8 text-center">Leadership</h2>
+          <h2 className="text-3xl font-display font-bold mb-8 text-center">Managerial</h2>
           <motion.div 
             className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto"
             variants={cardContainerVariants}

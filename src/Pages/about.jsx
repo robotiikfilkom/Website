@@ -5,7 +5,7 @@ import AboutUs from "../components/About/aboutus";
 
 export default function About() {
   return (
-    <div className="bg-[var(--cream)] leading-relaxed">
+    <div className="bg-[var(--cream)] leading-relaxed robotics-bg">
       <TopImage />
       <BottomImage />
       <div className="space-y-8 text-[var(--black)]">

@@ -66,7 +66,7 @@ const LogoSet = ({ brandLogos }) => (
 // Komponen Utama
 // ====================================================================
 export default function Brandhome() {
-  const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQeH6GPT_zewQGOeZcDKZQowl7FVcSiQZr-JDSwSL9tnQpIGhI_2a8wk5YhTWMNRUxXTj5kZDxQ-b6T/pub?gid=1831910622&single=true&output=csv';
+  const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=1831910622&single=true&output=csv';
   
   const { data: brandLogos, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
 
