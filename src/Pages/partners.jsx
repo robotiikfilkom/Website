@@ -5,6 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import emailjs from "@emailjs/browser";
 
+/**
+ * Hook mengambil data CSV publik dari Google Sheets.
+ * - Tidak memaksa tipe kolom (biarkan sebagai string), parsing dilakukan di pemakai.
+ */
 function useGoogleSheetData(spreadsheetUrl) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,6 +17,7 @@ function useGoogleSheetData(spreadsheetUrl) {
   const fetchData = useCallback(() => {
     setLoading(true);
     setError(null);
+
     fetch(spreadsheetUrl, { cache: "no-cache" })
       .then((response) => {
         if (!response.ok) throw new Error("Gagal mengambil data Spreadsheet.");
@@ -25,8 +30,7 @@ function useGoogleSheetData(spreadsheetUrl) {
           transformHeader: (header) => header.toLowerCase().trim(),
           complete: (results) => {
             const parsedData = results.data.map((row) => ({
-              ...row,
-              id: parseInt(row.id, 10),
+              ...row, // biarkan semua kolom sebagai string
             }));
             setData(parsedData);
           },
@@ -50,47 +54,65 @@ function useGoogleSheetData(spreadsheetUrl) {
 function RandomNumber({ n }) {
   const { number } = useSpring({
     from: { number: 0 },
-    to: n,
+    to: { number: Number.isFinite(n) ? n : 0 },
     delay: 200,
     config: { mass: 1, tension: 20, friction: 10 },
   });
   return <animated.span>{number.to((val) => val.toFixed(0))}</animated.span>;
 }
 
-function PartnersStats() {
-  const stats = [
-    { value: 95, label: "Achievement", suffix: "%" },
-    { value: 72, label: "Engagement", suffix: "+" },
-    { value: 250, label: "Member", suffix: "+" },
+/** ====== STATISTIK ====== */
+export function PartnersStats() {
+  const SPREADSHEET_URL =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=1474762779&single=true&output=csv";
+
+  const { data: statsData, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
+
+  const getStatValue = (id) => {
+    if (loading || error || statsData.length === 0) return 0;
+    const stat = statsData.find(
+      (item) => String(item.id || "").trim().toLowerCase() === id.toLowerCase()
+    );
+    const raw = stat?.value;
+    const parsed = parseInt(String(raw ?? "0"), 10);
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+
+  const statsLayout = [
+    { id: "Achievement", suffix: "+" },
+    { id: "Engagement", suffix: "+" },
+    { id: "Member", suffix: "+" },
   ];
+
+  if (loading) return <div className="text-center p-4">Loading stats...</div>;
+  if (error) return <div className="text-center p-4 text-red-500">Failed to load stats.</div>;
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
-      {stats.map((stat, index) => (
+      {statsLayout.map((stat, index) => (
         <div
-          key={stat.label}
+          key={stat.id}
           className={`bg-[var(--white)] text-[var(--main-blue)] p-4 rounded-xl ${
             index === 2 ? "col-span-2 sm:col-span-1" : ""
           }`}
         >
           <div className="text-3xl sm:text-4xl md:text-5xl font-bold">
-            <RandomNumber n={stat.value} />
+            <RandomNumber n={getStatValue(stat.id)} />
             {stat.suffix}
           </div>
-          <div className="text-sm mt-1">{stat.label}</div>
+          <div className="text-sm mt-1">{stat.id}</div>
         </div>
       ))}
     </div>
   );
 }
 
+/** ====== KARTU PARTNER ====== */
 function PartnerCard({ title, image, description, className, delay = 0 }) {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsMounted(true);
-    }, 200 + delay);
+    const timer = setTimeout(() => setIsMounted(true), 200 + delay);
     return () => clearTimeout(timer);
   }, [delay]);
 
@@ -133,17 +155,16 @@ function PartnerCard({ title, image, description, className, delay = 0 }) {
   );
 }
 
+/** ====== HALAMAN ====== */
 export default function Partners() {
   const SPREADSHEET_URL =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vRjOBJTdcNoh1jI25nxRWzcgG-mDTbbFQ662h-4KdHdBwHv7lMTlQ5q0muOf0c-et-cBMdiHx20mmeL/pub?gid=1474762779&single=true&output=csv";
-  const {
-    data: partnersData,
-    loading,
-    error,
-  } = useGoogleSheetData(SPREADSHEET_URL);
+
+  const { data: partnersData, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
 
   const getPartnerLayoutClass = (id) => {
-    switch (id) {
+    const key = Number(id);
+    switch (key) {
       case 1:
         return "md:row-start-1 md:col-start-1 md:col-span-3";
       case 2:
@@ -161,48 +182,57 @@ export default function Partners() {
     }
   };
 
-  const filteredPartners = partnersData.filter(
-    (item) => item.id >= 1 && item.id <= 6
-  );
+  // Ambil hanya id 1..6 (id pada CSV bisa string, jadi konversi Number dahulu)
+  const filteredPartners = partnersData
+    .map((item) => ({ ...item, _idNum: Number(item.id) }))
+    .filter((item) => Number.isFinite(item._idNum) && item._idNum >= 1 && item._idNum <= 6);
 
-  const form = useRef();
+  const form = useRef(null);
   const [formState, setFormState] = useState({ status: "idle", message: "" });
 
   const sendEmail = (e) => {
     e.preventDefault();
     setFormState({ status: "submitting", message: "" });
 
+    if (!form.current) {
+      setFormState({ status: "error", message: "Form tidak ditemukan." });
+      return;
+    }
+
+    const fd = new FormData(form.current);
+    const name = String(fd.get("from_name") ?? "").trim();
+    const email = String(fd.get("from_email") ?? "").trim();
+
     const SERVICE_ID = "service_d5kvch9";
     const TEMPLATE_ID = "template_mtyjrlp";
     const PUBLIC_KEY = "v8tCgfbjACBumAo1N";
 
-    const name = String(fd.get("name") ?? "").trim();
-    const email = String(fd.get("email") ?? "").trim();
-
-    emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY).then(
-      (result) => {
+    emailjs
+      .sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
+      .then(() => {
         setFormState({
           status: "success",
-          message: `Halo, ${name} formulir kamu berhasil terkirim. Kami akan menghubungi ${email} setelah peninjauan.`,
+          message: `Halo, ${name}! Formulir kamu berhasil terkirim. Kami akan menghubungi ${email} setelah peninjauan.`,
         });
         form.current.reset();
         setTimeout(() => setFormState({ status: "idle", message: "" }), 4000);
-      },
-      (error) => {
+      })
+      .catch((err) => {
+        console.error("EmailJS error:", err);
         setFormState({
           status: "error",
           message: "Failed to send message. Please try again.",
         });
-      }
-    );
+      });
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-[var(--main-blue)] text-[var(--white)] font-sans relative overflow-hidden">
-      <div className="absolute w-40 h-40 bg-[var(--blue)] opacity-20 blur-3xl rounded-full top-10 left-10"></div>
-      <div className="absolute w-32 h-32 bg-[var(--blue)] opacity-20 blur-2xl rounded-full top-1/3 right-10"></div>
-      <div className="absolute w-24 h-24 bg-[var(--blue)] opacity-10 blur-2xl rounded-full bottom-1/4 left-1/4"></div>
-      <div className="absolute w-28 h-28 bg-[var(--blue)] opacity-10 blur-2xl rounded-full bottom-10 right-1/3"></div>
+      {/* dekorasi latar */}
+      <div className="absolute w-40 h-40 bg-[var(--blue)] opacity-20 blur-3xl rounded-full top-10 left-10" />
+      <div className="absolute w-32 h-32 bg-[var(--blue)] opacity-20 blur-2xl rounded-full top-1/3 right-10" />
+      <div className="absolute w-24 h-24 bg-[var(--blue)] opacity-10 blur-2xl rounded-full bottom-1/4 left-1/4" />
+      <div className="absolute w-28 h-28 bg-[var(--blue)] opacity-10 blur-2xl rounded-full bottom-10 right-1/3" />
 
       <header className="px-4 sm:px-6 md:px-8 lg:px-16 pt-32 text-center">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[var(--white)] font-display">
@@ -222,10 +252,9 @@ export default function Partners() {
         </div>
         <div className="lg:col-span-2 space-y-8">
           <p className="text-[var(--white)]/80 text-base md:text-lg">
-            ROBOTIIK provides real benefits to sponsors by reaching students and
-            the community through educational activities, competitions, and
-            social media. Your support will help develop robotics technology
-            while also being an effective and positive promotional tool.
+            ROBOTIIK provides real benefits to sponsors by reaching students and the community
+            through educational activities, competitions, and social media. Your support will help
+            develop robotics technology while also being an effective and positive promotional tool.
           </p>
           <PartnersStats />
         </div>
@@ -238,11 +267,11 @@ export default function Partners() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-8 gap-6 max-w-7xl mx-auto">
             {filteredPartners.map((item, index) => (
               <PartnerCard
-                key={item.id}
+                key={item._idNum}
                 title={item.title}
                 image={item.image}
                 description={item.description}
-                className={getPartnerLayoutClass(item.id)}
+                className={getPartnerLayoutClass(item._idNum)}
                 delay={index * 100}
               />
             ))}
@@ -262,10 +291,7 @@ export default function Partners() {
           <form ref={form} onSubmit={sendEmail} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="w-full">
-                <label
-                  htmlFor="from_name"
-                  className="block text-sm font-semibold mb-2"
-                >
+                <label htmlFor="from_name" className="block text-sm font-semibold mb-2">
                   Nama
                 </label>
                 <input
@@ -278,10 +304,7 @@ export default function Partners() {
                 />
               </div>
               <div className="w-full">
-                <label
-                  htmlFor="from_email"
-                  className="block text-sm font-semibold mb-2"
-                >
+                <label htmlFor="from_email" className="block text-sm font-semibold mb-2">
                   Email
                 </label>
                 <input
@@ -294,11 +317,9 @@ export default function Partners() {
                 />
               </div>
             </div>
+
             <div>
-              <label
-                htmlFor="subject"
-                className="block text-sm font-semibold mb-2"
-              >
+              <label htmlFor="subject" className="block text-sm font-semibold mb-2">
                 Subjek
               </label>
               <input
@@ -310,11 +331,9 @@ export default function Partners() {
                 placeholder="Tujuan Partnership"
               />
             </div>
+
             <div>
-              <label
-                htmlFor="message"
-                className="block text-sm font-semibold mb-2"
-              >
+              <label htmlFor="message" className="block text-sm font-semibold mb-2">
                 Deskripsi
               </label>
               <textarea
@@ -326,13 +345,12 @@ export default function Partners() {
                 placeholder="Jelaskan tujuan Anda di sini..."
               ></textarea>
             </div>
+
             <div className="flex justify-end items-center pt-4 gap-4">
               {formState.message && (
                 <p
                   className={`text-sm ${
-                    formState.status === "success"
-                      ? "text-green-400"
-                      : "text-red-400"
+                    formState.status === "success" ? "text-green-400" : "text-red-400"
                   }`}
                 >
                   {formState.message}
