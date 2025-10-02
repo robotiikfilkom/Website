@@ -30,8 +30,8 @@ function useGoogleSheetData(spreadsheetUrl) {
           transformHeader: header => header.toLowerCase().trim(),
           complete: (results) => {
             const parsedData = results.data.map(row => ({
-                ...row,
-                id: parseInt(row.id, 10)
+              ...row,
+              id: parseInt(row.id, 10)
             }));
             setData(parsedData.reverse());
           },
@@ -105,7 +105,8 @@ export default function RND() {
   const { data: allData, loading, error } = useGoogleSheetData(SPREADSHEET_URL);
 
   const leaders = allData.filter(item => item.category?.toLowerCase().trim() === 'leader');
-  const staff = allData.filter(item => item.category?.toLowerCase().trim() === 'staff');
+  // Ubah dari 'staff' => 'team'
+  const team = allData.filter(item => item.category?.toLowerCase().trim() === 'team');
   const activities = allData.filter(item => item.category?.toLowerCase().trim() === 'activity');
 
   const divisionInfo = allData.find(item => item.category?.toLowerCase().trim() === 'division_info');
@@ -184,7 +185,7 @@ export default function RND() {
           </motion.div>
         </motion.section>
 
-        {staff.length > 0 && (
+        {team.length > 0 && (
           <motion.section 
             className="mb-20"
             variants={sectionVariants}
@@ -194,14 +195,14 @@ export default function RND() {
           >
             <h2 className="text-3xl font-display font-bold mb-8 text-center">The Team</h2>
             <motion.div 
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+              className="flex flex-wrap justify-center gap-8"
               variants={cardContainerVariants}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
             >
-              {staff.map(member => (
-                <motion.div key={member.id} variants={cardVariants}>
+              {team.map(member => (
+                <motion.div key={member.id} variants={cardVariants} className="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.33%-1.5rem)] max-w-sm">
                   <MemberCard member={member} />
                 </motion.div>
               ))}

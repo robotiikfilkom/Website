@@ -157,7 +157,7 @@ export default function Humanoid() {
             className="mb-20"
             variants={sectionVariants} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.2 }}
           >
-            <h2 className="text-3xl font-display font-bold mb-8 text-center">Leadership</h2>
+            <h2 className="text-3xl font-display font-bold mb-8 text-center">Managerial</h2>
             
             <motion.div 
               className="flex flex-wrap justify-center gap-8"
