@@ -12,10 +12,10 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 const socialLinks = [
   { href: 'mailto:robotiik.filkom@ub.ac.id', icon: faEnvelope, hoverClass: 'hover:text-[var(--orange)]' },
   { href: 'https://www.instagram.com/robo_tiik/', icon: faInstagram, hoverClass: 'hover:text-pink-400' },
-  { href: '#', icon: faTiktok, hoverClass: 'hover:text-white/70' },
+  { href: 'https://www.tiktok.com/@robo_tiik', icon: faTiktok, hoverClass: 'hover:text-white/70' },
   { href: '#', icon: faYoutube, hoverClass: 'hover:text-red-500' },
-  { href: '#', icon: faXTwitter, hoverClass: 'hover:text-blue-500' },
-  { href: '#', icon: faLinkedin, hoverClass: 'hover:text-blue-400' },
+  { href: 'https://x.com/Robo_TIIK', icon: faXTwitter, hoverClass: 'hover:text-blue-500' },
+  { href: 'https://www.linkedin.com/company/robotiik-filkom-ub/', icon: faLinkedin, hoverClass: 'hover:text-blue-400' },
 ];
 
 export default function Footer() {
