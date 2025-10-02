@@ -176,11 +176,14 @@ export default function Partners() {
     const TEMPLATE_ID = "template_mtyjrlp";
     const PUBLIC_KEY = "v8tCgfbjACBumAo1N";
 
+    const name = String(fd.get("name") ?? "").trim();
+    const email = String(fd.get("email") ?? "").trim();
+
     emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY).then(
       (result) => {
         setFormState({
           status: "success",
-          message: "Halo, {{name}} formulir kamu berhasil terkirim. Kami akan menghubungi {{email}} setelah peninjauan.",
+          message: `Halo, ${name} formulir kamu berhasil terkirim. Kami akan menghubungi ${email} setelah peninjauan.`,
         });
         form.current.reset();
         setTimeout(() => setFormState({ status: "idle", message: "" }), 4000);
