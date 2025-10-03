@@ -64,7 +64,7 @@ const divisionLinks = [
   { to: '/division/hrd', text: 'HRD' },
   { to: '/division/general-affair', text: 'General Affair' },
   { to: '/division/mit', text: 'MIT' },
-  { to: '/division/rnd', text: 'R&D' },
+  { to: '/division/rnd', text: 'RND' },
   { to: '/division/humanoid', text: 'Humanoid' },
   { to: '/division/amarine', text: 'Amarine' },
   { to: '/division/quadcopter', text: 'Quadcopter' },
