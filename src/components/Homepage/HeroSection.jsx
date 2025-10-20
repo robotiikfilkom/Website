@@ -1,38 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import CtaButton from './CtaButton';
 import ScrollIndicator from './ScrollIndicator';
-import NET from 'vanta/dist/vanta.net.min';
-import * as THREE from 'three';
+import LiquidEther from './LiquidEther';
 
 export default function HeroSection() {
-  const [vantaEffect, setVantaEffect] = useState(0);
-  const vantaRef = useRef(null);
-
-  useEffect(() => {
-    if (!vantaEffect) {
-      setVantaEffect(NET({
-        el: vantaRef.current,
-        THREE: THREE,
-        mouseControls: true,
-        touchControls: true,
-        gyrocontrols: false,
-        minHeight: 200.00,
-        minWidth: 200.00,
-        scale: 1.00,
-        scaleMobile: 1.00,
-        color: '#0B0C0C',
-        backgroundColor: '#001F3F',
-        points: 12.00,
-        maxDistance: 20.00,
-        spacing: 18.00
-      }));
-    }
-    return () => {
-      if (vantaEffect) vantaEffect.destroy();
-    };
-  }, [vantaEffect]);
-
   const line1 = "Satu Visi, Wujud Aksi,";
   const line2 = "Bangga Raih Prestasi";
 
@@ -72,9 +44,27 @@ export default function HeroSection() {
     <section className="relative min-h-screen overflow-hidden">
       
       <div
-        ref={vantaRef}
-        className="absolute top-0 left-0 w-full h-full z-0 blur-xs" 
-      />
+        className="absolute top-0 left-0 w-full h-full z-0"
+        style={{ width: '100%', height: '100%', position: 'absolute' }}
+      >
+        <LiquidEther
+          colors={['#0073BA', '#F8FAFB', '#F8FAFB']}
+          mouseForce={20}
+          cursorSize={100}
+          isViscous={false}
+          viscous={30}
+          iterationsViscous={32}
+          iterationsPoisson={32}
+          resolution={0.5}
+          isBounce={false}
+          autoDemo={true}
+          autoSpeed={0.5}
+          autoIntensity={2.2}
+          takeoverDuration={0.25}
+          autoResumeDelay={3000}
+          autoRampDuration={0.6}
+        />
+      </div>
 
       <div className="relative z-10 min-h-screen flex flex-col justify-center text-[var(--white)] px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="flex-1 flex flex-col items-center justify-center text-center">
