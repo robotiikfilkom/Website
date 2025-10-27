@@ -4,7 +4,7 @@ import AboutUs from '../components/Homepage/AboutUs';
 import ImageMarquee from '../components/Homepage/ImageMarquee';
 import TechnicalDivision from '../components/Homepage/TechnicalDivision';
 import Achievementshome from '../components/Homepage/Achievementshome';
-import Brandhome from '../components/Homepage/Brandhome';
+// import Brandhome from '../components/Homepage/Brandhome';
 import Newshome from '../components/Homepage/Newshome';
 
 const Home = () => {
@@ -17,7 +17,7 @@ const Home = () => {
             <ImageMarquee />
             <TechnicalDivision />
             <Achievementshome />
-            <Brandhome />
+            {/* <Brandhome /> */}
             <Newshome />
         </div>
     );

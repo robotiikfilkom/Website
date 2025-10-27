@@ -1,8 +1,8 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import CtaButton from './CtaButton';
-import ScrollIndicator from './ScrollIndicator';
-import LiquidEther from './LiquidEther';
+import React from "react";
+import { motion } from "framer-motion";
+import CtaButton from "./CtaButton";
+import ScrollIndicator from "./ScrollIndicator";
+import Particles from "./Particles";
 
 export default function HeroSection() {
   const line1 = "Satu Visi, Wujud Aksi,";
@@ -42,27 +42,26 @@ export default function HeroSection() {
 
   return (
     <section className="relative min-h-screen overflow-hidden">
-      
       <div
-        className="absolute top-0 left-0 w-full h-full z-0"
-        style={{ width: '100%', height: '100%', position: 'absolute' }}
+        className="absolute inset-0 w-full h-full z-0"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          overflow: "hidden",
+        }}
       >
-        <LiquidEther
-          colors={['#0073BA', '#F8FAFB', '#F8FAFB']}
-          mouseForce={20}
-          cursorSize={100}
-          isViscous={false}
-          viscous={30}
-          iterationsViscous={32}
-          iterationsPoisson={32}
-          resolution={0.5}
-          isBounce={false}
-          autoDemo={true}
-          autoSpeed={0.5}
-          autoIntensity={2.2}
-          takeoverDuration={0.25}
-          autoResumeDelay={3000}
-          autoRampDuration={0.6}
+        <Particles
+          particleColors={["#ffffff", "#ffffff"]}
+          particleCount={200}
+          particleSpread={10}
+          speed={0.1}
+          particleBaseSize={100}
+          moveParticlesOnHover={true}
+          alphaParticles={false}
+          disableRotation={false}
         />
       </div>
 
@@ -102,7 +101,8 @@ export default function HeroSection() {
             <CtaButton />
             <p className="font-glancyr max-w-sm sm:max-w-md text-sm sm:text-base text-white/80">
               Discover the captivating world of robotics where innovation,
-              cross-division collaboration, and limitless exploration come to life.
+              cross-division collaboration, and limitless exploration come to
+              life.
             </p>
           </div>
           <div className="mt-4 md:mt-0">
@@ -110,7 +110,6 @@ export default function HeroSection() {
           </div>
         </motion.div>
       </div>
-
     </section>
   );
 }
